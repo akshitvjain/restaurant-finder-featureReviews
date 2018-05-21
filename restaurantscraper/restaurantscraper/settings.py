@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Scrapy settings for zomatoscraper project
+# Scrapy settings for restaurantscraper project
 #
 # For simplicity, this file contains only settings considered important or
 # commonly used. You can find more settings consulting the documentation:
@@ -9,14 +9,14 @@
 #     https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://doc.scrapy.org/en/latest/topics/spider-middleware.html
 
-BOT_NAME = 'zomatoscraper'
+BOT_NAME = 'restaurantscraper'
 
-SPIDER_MODULES = ['zomatoscraper.spiders']
-NEWSPIDER_MODULE = 'zomatoscraper.spiders'
+SPIDER_MODULES = ['restaurantscraper.spiders']
+NEWSPIDER_MODULE = 'restaurantscraper.spiders'
 
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
-#USER_AGENT = 'zomatoscraper (+http://www.yourdomain.com)'
+#USER_AGENT = 'restaurantscraper (+http://www.yourdomain.com)'
 
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = True
@@ -47,13 +47,13 @@ ROBOTSTXT_OBEY = True
 # Enable or disable spider middlewares
 # See https://doc.scrapy.org/en/latest/topics/spider-middleware.html
 #SPIDER_MIDDLEWARES = {
-#    'zomatoscraper.middlewares.ZomatoscraperSpiderMiddleware': 543,
+#    'restaurantscraper.middlewares.RestaurantscraperSpiderMiddleware': 543,
 #}
 
 # Enable or disable downloader middlewares
 # See https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
 #DOWNLOADER_MIDDLEWARES = {
-#    'zomatoscraper.middlewares.ZomatoscraperDownloaderMiddleware': 543,
+#    'restaurantscraper.middlewares.RestaurantscraperDownloaderMiddleware': 543,
 #}
 
 # Enable or disable extensions
@@ -65,7 +65,7 @@ ROBOTSTXT_OBEY = True
 # Configure item pipelines
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 #ITEM_PIPELINES = {
-#    'zomatoscraper.pipelines.ZomatoscraperPipeline': 300,
+#    'restaurantscraper.pipelines.RestaurantscraperPipeline': 300,
 #}
 
 # Enable and configure the AutoThrottle extension (disabled by default)
