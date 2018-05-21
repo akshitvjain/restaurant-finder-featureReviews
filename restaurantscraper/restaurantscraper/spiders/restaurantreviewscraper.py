@@ -4,7 +4,7 @@ import scrapy
 
 class RestaurantreviewscraperSpider(scrapy.Spider):
     name = 'restaurantreviewscraper'
-    allowed_domains = ['yelp.com']
+    allowed_domains = ['tripadvisor.in']
     start_urls = ['https://www.tripadvisor.in/Restaurants-g304554-Mumbai_Maharashtra.html']
 
     def parse(self, response):
