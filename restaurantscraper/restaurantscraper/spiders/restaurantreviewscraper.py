@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import scrapy
-
+from scrapy.selector import Selector
 
 class RestaurantreviewscraperSpider(scrapy.Spider):
 	name = 'restaurantreviewscraper'
@@ -19,5 +19,8 @@ class RestaurantreviewscraperSpider(scrapy.Spider):
 			yield scrapy.Request(next_page, callback=self.parse)
 		
 	def parse_restaurant(self, response):
-		print(response.xpath('//div[@class="blEntry phone"]//span/text()').extract_first())
-        
+		sel = Selector(response)
+		print('Restaurant Name: %s' % sel.xpath('//h1/text()').extract()[1])
+		addr_ = response.xpath('//div[@class="blEntry address  clickable colCnt2"]//span/text()').extract()
+		addr = '%s | %s %s%s' % (addr_[0], addr_[1], addr_[2], addr_[3])
+		print('Address: %s' % addr)
