@@ -9,6 +9,7 @@ import scrapy
 
 
 class RestaurantscraperItem(scrapy.Item):
-    # define the fields for your item here like:
-    # name = scrapy.Field()
-    pass
+    # the fields for the item are defined here like:
+
+	restaurant_name = scrapy.Field()
+	restaurant_addr = scrapy.Field()
