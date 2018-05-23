@@ -45,4 +45,6 @@ class RestaurantreviewscraperSpider(scrapy.Spider):
 		else:
 			hasReviews = False
 			rest_item['rest_total_reviews'] = 'N/A'
+		if hasReviews:
+			pass	
 		yield rest_item
