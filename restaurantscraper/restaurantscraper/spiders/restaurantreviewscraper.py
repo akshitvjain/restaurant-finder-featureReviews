@@ -39,7 +39,7 @@ class RestaurantreviewscraperSpider(scrapy.Spider):
 		else:
 			rest_item['rest_rank'] = 'N/A'
 		# extract number of reviews 
-		if (response.css('a.seeAllReview')):
+		if (response.css('a.seeAllReviews')):
 			rest_item['rest_total_reviews'] = response.css('a.seeAllReviews::text') \
 												.extract_first().strip(' reviews\n')
 		else:
