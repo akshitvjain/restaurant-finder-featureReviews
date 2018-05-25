@@ -17,7 +17,7 @@ class RestaurantreviewscraperSpider(scrapy.Spider):
 	
 	def __init__(self):
 		self.restaurants_scraped = 0
-		self.driver = webdriver.Chrome() 
+		#self.driver = webdriver.Chrome() 
 
 	def parse(self, response):
 		# yield restaurant information
@@ -51,12 +51,18 @@ class RestaurantreviewscraperSpider(scrapy.Spider):
 		if (response.css('div.prw_rup.prw_restaurants_header_eatery_pop_index')):
 			rest_item['rest_rank'] = sel.xpath('//b/span/text()').extract()[0]
 		else:
-			rest_item['rest_rank'] = 'N/A'
+			rest_item['rest_rank'] = None
 		# extract ratings
 		if (response.css('span.overallRating')):
 			rest_item['rest_rating'] = float(response.css('span.overallRating::text').extract_first())
 		else:
 			rest_item['rest_rating'] = 0
+		# extract price
+		if (response.css('span.text')):
+			rest_item['rest_price'] = response.css('span.text::text').extract_first() \
+										.encode("utf-8").replace('\xe2\x82\xb9', 'r')
+		else:
+			rest_item['res_price'] = None
 		# extract number of reviews 
 		if (response.css('a.seeAllReviews')):
 			rest_item['rest_total_reviews'] = \
@@ -84,7 +90,6 @@ class RestaurantreviewscraperSpider(scrapy.Spider):
 				time.sleep(4)
 			rest_item['rest_reviews'] = reviews
 			self.driver.close()
-
 		yield rest_item
 
 	def parse_reviews(self):
