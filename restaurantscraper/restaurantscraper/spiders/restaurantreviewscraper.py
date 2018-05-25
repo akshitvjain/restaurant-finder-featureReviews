@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import scrapy
 from scrapy.selector import Selector
+from selenium import webdriver
 from restaurantscraper.items import RestaurantscraperItem
 
 class RestaurantreviewscraperSpider(scrapy.Spider):
@@ -40,11 +41,33 @@ class RestaurantreviewscraperSpider(scrapy.Spider):
 			rest_item['rest_rank'] = 'N/A'
 		# extract number of reviews 
 		if (response.css('a.seeAllReviews')):
-			rest_item['rest_total_reviews'] = response.css('a.seeAllReviews::text') \
-												.extract_first().strip(' reviews\n')
+			rest_item['rest_total_reviews'] = \
+			int(response.css('span.reviews_header_count.block_title::text') \
+								.extract_first().strip('()').replace(",", ""))
 		else:
 			hasReviews = False
-			rest_item['rest_total_reviews'] = 'N/A'
+			rest_item['rest_total_reviews'] = 0
+		# extract reviews 
 		if hasReviews:
-			pass	
+			reviews = []
+			url = response.url
+			driver = webdriver.Chrome()
+			try:
+				driver.get(url)
+			except:
+				pass
+			time.sleep(2)
+			while len(reviews) < rest_item['rest_total_reviews']:
+				reviews += self.parse_reviews(driver)
+				print('Fetched a total of {} reviews by now.'.format(len(reviews)))
+				next_button = driver.find_element_by_class_name('next')
+				if 'disabled' in next_button.get_attribute('class'): 
+					break
+				next_button.click()
+			driver.close()
 		yield rest_item
+
+	def parse_reviews(self, driver):
+		reviews = []
+		# TODO
+		return reviews
