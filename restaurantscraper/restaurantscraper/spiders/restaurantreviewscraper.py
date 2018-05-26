@@ -17,7 +17,7 @@ class RestaurantreviewscraperSpider(scrapy.Spider):
 	
 	def __init__(self):
 		self.restaurants_scraped = 0
-		#self.driver = webdriver.Chrome() 
+		self.driver = webdriver.Chrome() 
 
 	def parse(self, response):
 		# yield restaurant information
