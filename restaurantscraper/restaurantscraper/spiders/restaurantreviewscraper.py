@@ -17,8 +17,7 @@ class RestaurantreviewscraperSpider(scrapy.Spider):
 	
 	def __init__(self):
 		self.restaurants_scraped = 0
-		self.driver = webdriver.Chrome() 
-
+		
 	def parse(self, response):
 		# yield restaurant information
 		for restaurant in response.css('a.property_title'):
@@ -40,6 +39,8 @@ class RestaurantreviewscraperSpider(scrapy.Spider):
 	def parse_restaurant(self, response):
 		hasReviews = True
 		sel = Selector(response)
+		# start the webdriver to crawl reviews
+		driver = webdriver.Chrome()
 		# initialize Item class to access the fields
 		rest_item = RestaurantscraperItem()
 		# extract restaurant name
@@ -76,30 +77,30 @@ class RestaurantreviewscraperSpider(scrapy.Spider):
 			reviews = []
 			url = response.url
 			try:
-				self.driver.get(url)
+				driver.get(url)
 			except:
 				pass
 			time.sleep(3)
 			while len(reviews) < MAX_REVIEWS:
-				reviews += self.parse_reviews()
+				reviews += self.parse_reviews(driver)
 				print('Fetched a total of {} reviews by now.'.format(len(reviews)))
-				next_button = self.driver.find_element_by_class_name('next')
+				next_button = driver.find_element_by_class_name('next')
 				if 'disabled' in next_button.get_attribute('class'):
 					break
 				next_button.click()
 				time.sleep(4)
 			rest_item['rest_reviews'] = reviews
-			self.driver.close()
+			driver.close()
 		yield rest_item
 
-	def parse_reviews(self):
+	def parse_reviews(self,driver):
 		reviews = []
 		try:
-			self.driver.find_element_by_class_name('ulBlueLinks').click()
+			driver.find_element_by_class_name('ulBlueLinks').click()
 		except:
 			pass
 		time.sleep(4)
-		review_containers = self.driver.find_elements_by_class_name('reviewSelector')
+		review_containers = driver.find_elements_by_class_name('reviewSelector')
 		for review in review_containers:
 			review_text = review.find_element_by_class_name('partial_entry').text.replace('\n', '')
 			reviews.append(review_text)
