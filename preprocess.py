@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 from pymongo import MongoClient
+import re
 import pandas as pd
-import spacy
-nlp = spacy.load('en')
-from spacy.lang.en.stop_words import STOP_WORDS
+import nltk
+from nltk.corpus import stopwords
+#stop = stopwords.words('english')
 
 class PreprocessRestaurantItem(object):
 	
@@ -23,12 +24,22 @@ class PreprocessRestaurantItem(object):
 								doc['rest_total_reviews'], doc['rest_reviews']])
 		self.df = pd.DataFrame(restaurants, columns=self.fields)
 
-	def preprocess_reviews(self):	
-		pass
-		# TODO: cleaning and preprocessing text reviews
-			
+	def preprocess_reviews(self):
+		for i, review_collection in enumerate(self.df['rest_reviews']):
+			for j, rev in enumerate(review_collection):	
+				review_sentences = rev.split('. ')
+				for sentence in review_sentences:
+					# convert to lowercase
+					sentence = sentence.lower()
+					# remove punctuation
+					sentence = re.sub(r'[^\w\s]','', sentence)
+					# tokenize sentence
+					token_sentence = nltk.word_tokenize(sentence)
+					# part-of-speech tagging
+					pos_tag_sentence = nltk.pos_tag(token_sentence)
+					print(pos_tag_sentence)
+				return
 						
-
 if __name__ == '__main__':
 	preprocess = PreprocessRestaurantItem()
 	preprocess.load_mongodb_to_pandas()

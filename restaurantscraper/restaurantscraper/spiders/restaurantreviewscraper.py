@@ -5,14 +5,14 @@ from scrapy.selector import Selector
 from selenium import webdriver
 from restaurantscraper.items import RestaurantscraperItem
 
-MAX_RESTAURANTS = 1000
-MAX_REVIEWS = 200
+MAX_RESTAURANTS = 2
+MAX_REVIEWS = 10
 
 class RestaurantreviewscraperSpider(scrapy.Spider):
 	name = 'restaurantreviewscraper'
-	allowed_domains = ['tripadvisor.in']
+	allowed_domains = ['tripadvisor.com']
 	start_urls = [
-		'https://www.tripadvisor.in/Restaurants-g304554-Mumbai_Maharashtra.html'
+		'https://www.tripadvisor.com/Restaurants-g186338-London_England.html'
 	]	
 	
 	def __init__(self):
@@ -24,12 +24,12 @@ class RestaurantreviewscraperSpider(scrapy.Spider):
 			self.restaurants_scraped += 1
 			if (self.restaurants_scraped > MAX_RESTAURANTS):
 				return
-			res_url = ('https://www.tripadvisor.in%s' % \
+			res_url = ('https://www.tripadvisor.com%s' % \
 				restaurant.xpath('@href').extract_first())
 			yield scrapy.Request(res_url, callback=self.parse_restaurant)
 
 		# move to the next page of restaurants
-		next_page = ('https://www.tripadvisor.in%s'\
+		next_page = ('https://www.tripadvisor.com%s'\
 			% (response.css('a.nav.next.rndBtn.ui_button.primary.taLnk')) \
 										.xpath('@href').extract_first())
 		print('NEXT PAGE: ' + next_page)
@@ -61,7 +61,7 @@ class RestaurantreviewscraperSpider(scrapy.Spider):
 		# extract price
 		if (response.css('span.text')):
 			rest_item['rest_price'] = response.css('span.text::text').extract_first() \
-										.encode("utf-8").replace('\xe2\x82\xb9', 'r')
+										.encode("utf-8")
 		else:
 			rest_item['res_price'] = None
 		# extract number of reviews 
