@@ -44,13 +44,13 @@ class PreprocessRestaurantItem(object):
 					tagged_reviews_sent.append(pos_tag_sentence)
 					# extract nouns and noun phrases from the review sentence
 					for tag in pos_tag_sentence:
-						# HERE TODO
+						pass	
+						#TODO HERE
 			# convert list to numpy array
 			tagged_reviews_sent = np.array(tagged_reviews_sent)
 			# store sentences in a dataframe
 			review_df = pd.DataFrame(tagged_reviews_sent, columns=['review_sent'])
-			print(review_df)
-			return
+			print(review_df.head())
 						
 if __name__ == '__main__':
 	preprocess = PreprocessRestaurantItem()
