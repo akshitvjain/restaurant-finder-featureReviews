@@ -2,9 +2,9 @@
 from pymongo import MongoClient
 import re
 import pandas as pd
+import numpy as np
 import nltk
 from nltk.corpus import stopwords
-#stop = stopwords.words('english')
 
 class PreprocessRestaurantItem(object):
 	
@@ -26,6 +26,10 @@ class PreprocessRestaurantItem(object):
 
 	def preprocess_reviews(self):
 		for i, review_collection in enumerate(self.df['rest_reviews']):
+			# collection of restraunt specific pos-tagged review sentences
+			tagged_reviews_sent = []
+			# collection of features in the reviews
+			rest_features = []
 			for j, rev in enumerate(review_collection):	
 				review_sentences = rev.split('. ')
 				for sentence in review_sentences:
@@ -37,8 +41,16 @@ class PreprocessRestaurantItem(object):
 					token_sentence = nltk.word_tokenize(sentence)
 					# part-of-speech tagging
 					pos_tag_sentence = nltk.pos_tag(token_sentence)
-					print(pos_tag_sentence)
-				return
+					tagged_reviews_sent.append(pos_tag_sentence)
+					# extract nouns and noun phrases from the review sentence
+					for tag in pos_tag_sentence:
+						# HERE TODO
+			# convert list to numpy array
+			tagged_reviews_sent = np.array(tagged_reviews_sent)
+			# store sentences in a dataframe
+			review_df = pd.DataFrame(tagged_reviews_sent, columns=['review_sent'])
+			print(review_df)
+			return
 						
 if __name__ == '__main__':
 	preprocess = PreprocessRestaurantItem()
