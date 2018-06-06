@@ -5,8 +5,8 @@ from scrapy.selector import Selector
 from selenium import webdriver
 from restaurantscraper.items import RestaurantscraperItem
 
-MAX_RESTAURANTS = 2
-MAX_REVIEWS = 10
+MAX_RESTAURANTS = 1000
+MAX_REVIEWS = 200
 
 class RestaurantreviewscraperSpider(scrapy.Spider):
 	name = 'restaurantreviewscraper'
