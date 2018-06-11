@@ -5,8 +5,9 @@ import pandas as pd
 import numpy as np
 import nltk
 from nltk.corpus import stopwords
+stop = set(stopwords.words('english'))
 
-class PreprocessRestaurantItem(object):
+class ProcessRestaurantItem(object):
 	
 	db_name = 'restaurantinfo'
 	fields = ['rest_name', 'rest_rank', 'rest_addr', 'rest_rating', 'rest_price', 'rest_total_reviews', 'rest_reviews']
@@ -24,7 +25,23 @@ class PreprocessRestaurantItem(object):
 								doc['rest_total_reviews'], doc['rest_reviews']])
 		self.df = pd.DataFrame(restaurants, columns=self.fields)
 
-	def preprocess_reviews(self):
+	def decontracted(self, review):
+		# specific
+		review = re.sub(r"won't", "will not", review)
+		review = re.sub(r"can\'t", "can not", review)
+		# general
+		review = re.sub(r"n\'t", " not", review)
+		review = re.sub(r"\'re", " are", review)
+		review = re.sub(r"\'s", " is", review)
+		review = re.sub(r"\'d", " would", review)
+		review = re.sub(r"\'ll", " will", review)
+		review = re.sub(r"\'t", " not", review)
+		review = re.sub(r"\'ve", " have", review)
+		review = re.sub(r"\'m", " am", review)
+		return review
+
+	def process_reviews(self):
+		# one restaurant at a time -> summarize reviews 
 		for i, review_collection in enumerate(self.df['rest_reviews']):
 			# collection of restraunt specific pos-tagged review sentences
 			tagged_reviews_sent = []
@@ -35,24 +52,42 @@ class PreprocessRestaurantItem(object):
 				for sentence in review_sentences:
 					# convert to lowercase
 					sentence = sentence.lower()
+					# contraction to decontraction
+					sentence = self.decontracted(sentence)
 					# remove punctuation
 					sentence = re.sub(r'[^\w\s]','', sentence)
 					# tokenize sentence
 					token_sentence = nltk.word_tokenize(sentence)
+					# remove stopwords
+					token_sentence = [i for i in token_sentence if i not in stop] 
 					# part-of-speech tagging
 					pos_tag_sentence = nltk.pos_tag(token_sentence)
 					tagged_reviews_sent.append(pos_tag_sentence)
-					# extract nouns and noun phrases from the review sentence
-					for tag in pos_tag_sentence:
-						pass	
-						#TODO HERE
-			# convert list to numpy array
+					# extract nouns as features from the review sentence
+					grammar = r'''
+						NP: {<NN>}
+					'''
+					# regex for noun phrases: {<DT|PP\$>?<JJ>*<NN.*>+} 
+					exp = nltk.RegexpParser(grammar)
+					sent_tree = exp.parse(pos_tag_sentence)
+					features = []
+					for subtree in sent_tree.subtrees():
+						if (subtree.label() == 'NP'):
+							nps = ' '.join(word[0] for word in subtree.leaves())
+							features.append(nps)
+					if len(features) != 0:
+						rest_features.append(features)
+			# convert lists to numpy array
 			tagged_reviews_sent = np.array(tagged_reviews_sent)
-			# store sentences in a dataframe
+			rest_features = np.array(rest_features)
+			# store pos tagged sentences in a dataframe for processing
 			review_df = pd.DataFrame(tagged_reviews_sent, columns=['review_sent'])
+			# store features extracted from review sentences
+			features_df = pd.DataFrame(rest_features, columns=['rest_features'])
+			print(features_df)
 			print(review_df.head())
 						
 if __name__ == '__main__':
-	preprocess = PreprocessRestaurantItem()
-	preprocess.load_mongodb_to_pandas()
-	preprocess.preprocess_reviews()
+	process = ProcessRestaurantItem()
+	process.load_mongodb_to_pandas()
+	process.process_reviews()
