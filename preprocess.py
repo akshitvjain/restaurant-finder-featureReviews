@@ -4,6 +4,8 @@ import re
 import pandas as pd
 import numpy as np
 import nltk
+from nltk.stem.wordnet import WordNetLemmatizer
+lmtzr = WordNetLemmatizer()
 from nltk.corpus import stopwords
 stop = set(stopwords.words('english'))
 
@@ -50,22 +52,19 @@ class ProcessRestaurantItem(object):
 			for j, rev in enumerate(review_collection):	
 				review_sentences = rev.split('. ')
 				for sentence in review_sentences:
-					# convert to lowercase
-					sentence = sentence.lower()
 					# contraction to decontraction
 					sentence = self.decontracted(sentence)
 					# remove punctuation
 					sentence = re.sub(r'[^\w\s]','', sentence)
 					# tokenize sentence
 					token_sentence = nltk.word_tokenize(sentence)
-					# remove stopwords
-					token_sentence = [i for i in token_sentence if i not in stop] 
 					# part-of-speech tagging
 					pos_tag_sentence = nltk.pos_tag(token_sentence)
 					tagged_reviews_sent.append(pos_tag_sentence)
 					# extract nouns as features from the review sentence
 					grammar = r'''
-						NP: {<NN>}
+						NP: {<NNS><NN>}
+							{<NN>}
 					'''
 					# regex for noun phrases: {<DT|PP\$>?<JJ>*<NN.*>+} 
 					exp = nltk.RegexpParser(grammar)
@@ -75,6 +74,10 @@ class ProcessRestaurantItem(object):
 						if (subtree.label() == 'NP'):
 							nps = ' '.join(word[0] for word in subtree.leaves())
 							features.append(nps)
+							# remove stopwords
+							features = [feat.lower() for feat in features if i not in stop]
+							# lemmatize feature words
+							features = [lmtzr.lemmatize(feat) for feat in features]	
 					if len(features) != 0:
 						rest_features.append(features)
 			# convert lists to numpy array
@@ -85,7 +88,7 @@ class ProcessRestaurantItem(object):
 			# store features extracted from review sentences
 			features_df = pd.DataFrame(rest_features, columns=['rest_features'])
 			print(features_df)
-			print(review_df.head())
+			#print(review_df.head())
 						
 if __name__ == '__main__':
 	process = ProcessRestaurantItem()
