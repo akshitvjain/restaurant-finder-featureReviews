@@ -8,6 +8,8 @@ from nltk.stem.wordnet import WordNetLemmatizer
 lmtzr = WordNetLemmatizer()
 from nltk.corpus import stopwords
 stop = set(stopwords.words('english'))
+from mlxtend.preprocessing import TransactionEncoder
+from mlxtend.frequent_patterns import apriori
 
 class ProcessRestaurantItem(object):
 	
@@ -41,7 +43,19 @@ class ProcessRestaurantItem(object):
 		review = re.sub(r"\'ve", " have", review)
 		review = re.sub(r"\'m", " am", review)
 		return review
-
+	
+	def frequent_itemsets(selfi, rest_features):
+		te = TransactionEncoder()
+		te_ary = te.fit(rest_features).transform(rest_features)
+		freq_df = pd.DataFrame(te_ary, columns=te.columns_)
+		frequent_itemsets = apriori(freq_df, min_support=0.1, use_colnames=True)
+		# collect all frequent features
+		freq_features = []
+		for itemset in frequent_itemsets['itemsets']:
+			for item in itemset:
+				freq_features.append(item)
+		return set(freq_features)
+	
 	def process_reviews(self):
 		# one restaurant at a time -> summarize reviews 
 		for i, review_collection in enumerate(self.df['rest_reviews']):
@@ -82,14 +96,11 @@ class ProcessRestaurantItem(object):
 						rest_features.append(features)
 			# convert lists to numpy array
 			tagged_reviews_sent = np.array(tagged_reviews_sent)
-			rest_features = np.array(rest_features)
 			# store pos tagged sentences in a dataframe for processing
 			review_df = pd.DataFrame(tagged_reviews_sent, columns=['review_sent'])
-			# store features extracted from review sentences
-			features_df = pd.DataFrame(rest_features, columns=['rest_features'])
-			print(features_df)
-			#print(review_df.head())
-						
+			freq_features = self.frequent_itemsets(rest_features)
+			print(freq_features)
+									
 if __name__ == '__main__':
 	process = ProcessRestaurantItem()
 	process.load_mongodb_to_pandas()
