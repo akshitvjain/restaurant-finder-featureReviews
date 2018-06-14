@@ -44,17 +44,22 @@ class ProcessRestaurantItem(object):
 		review = re.sub(r"\'m", " am", review)
 		return review
 	
-	def frequent_itemsets(selfi, rest_features):
+	def frequent_itemsets(self, rest_features):
 		te = TransactionEncoder()
 		te_ary = te.fit(rest_features).transform(rest_features)
 		freq_df = pd.DataFrame(te_ary, columns=te.columns_)
 		frequent_itemsets = apriori(freq_df, min_support=0.1, use_colnames=True)
+		print(frequent_itemsets)
 		# collect all frequent features
 		freq_features = []
 		for itemset in frequent_itemsets['itemsets']:
 			for item in itemset:
 				freq_features.append(item)
 		return set(freq_features)
+	
+	def extract_opinion_words(self, freq_features):
+		print(freq_features)
+		pass
 	
 	def process_reviews(self):
 		# one restaurant at a time -> summarize reviews 
@@ -76,6 +81,7 @@ class ProcessRestaurantItem(object):
 					pos_tag_sentence = nltk.pos_tag(token_sentence)
 					tagged_reviews_sent.append(pos_tag_sentence)
 					# extract nouns as features from the review sentence
+					# using chunking with regular expressions
 					grammar = r'''
 						NP: {<NNS><NN>}
 							{<NN>}
@@ -99,7 +105,7 @@ class ProcessRestaurantItem(object):
 			# store pos tagged sentences in a dataframe for processing
 			review_df = pd.DataFrame(tagged_reviews_sent, columns=['review_sent'])
 			freq_features = self.frequent_itemsets(rest_features)
-			print(freq_features)
+			opinion_words = self.extract_opinion_words(freq_features)
 									
 if __name__ == '__main__':
 	process = ProcessRestaurantItem()
