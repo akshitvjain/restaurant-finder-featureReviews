@@ -18,9 +18,10 @@ class ProcessRestaurantItem(object):
 	df = None
 
 	def __init__(self): 
+		# Setup Client for MongoDB
 		self.client = MongoClient('mongodb://localhost:27017/restaurantinfo')
 		self.db = self.client[self.db_name]
-	
+
 	def load_mongodb_to_pandas(self):	
 		restaurants = []
 		for doc in self.db.restaurantreviews.find():
@@ -43,13 +44,11 @@ class ProcessRestaurantItem(object):
 		review = re.sub(r"\'ve", " have", review)
 		review = re.sub(r"\'m", " am", review)
 		return review
-	
-	
+		
 	def add_rest_features(self, freq_features):
 		manual_rest_features = ['value', 'location', 'food', 'service',
 								'price', 'atmosphere', 'vibe', 'cuisine',
 								'ambience', 'decor', 'quality']
-
 		freq_features.extend(manual_rest_features)
 		return freq_features
 
@@ -58,7 +57,6 @@ class ProcessRestaurantItem(object):
 		te_ary = te.fit(rest_features).transform(rest_features)
 		freq_df = pd.DataFrame(te_ary, columns=te.columns_)
 		frequent_itemsets = apriori(freq_df, min_support=0.1, use_colnames=True)
-		print(frequent_itemsets)
 		# collect all frequent features
 		freq_features = []
 		for itemset in frequent_itemsets['itemsets']:
@@ -67,10 +65,15 @@ class ProcessRestaurantItem(object):
 		freq_features = self.add_rest_features(freq_features)
 		return set(freq_features)
 	
-	def extract_opinion_words(self, freq_features):
-		print(freq_features)
-		pass
-	
+	def extract_opinion_words(self, freq_features, review_df):
+		feaure_opinion_map = list()
+		for review_sent in review_df['review_sent']:
+			review_no_tag = [words[0] for words in review_sent]
+			for feature in freq_features:
+				if feature in review_no_tags:
+					for words in review_sent:
+						pass 
+								
 	def process_reviews(self):
 		# one restaurant at a time -> summarize reviews 
 		for i, review_collection in enumerate(self.df['rest_reviews']):
@@ -115,7 +118,8 @@ class ProcessRestaurantItem(object):
 			# store pos tagged sentences in a dataframe for processing
 			review_df = pd.DataFrame(tagged_reviews_sent, columns=['review_sent'])
 			freq_features = self.frequent_itemsets(rest_features)
-			opinion_words = self.extract_opinion_words(freq_features)
+			opinion_words = self.extract_opinion_words(freq_features, review_df)
+			return
 									
 if __name__ == '__main__':
 	process = ProcessRestaurantItem()
