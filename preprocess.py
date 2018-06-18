@@ -68,7 +68,6 @@ class ProcessRestaurantItem(object):
 	def extract_opinion_words(self, freq_features, review_df):
 		opinion_words = list()
 		for review_sent in review_df['review_sent']:
-			print(review_sent)
 			review_no_tag = [words[0] for words in review_sent]
 			for feature in freq_features:
 				if feature in review_no_tag:
@@ -122,7 +121,7 @@ class ProcessRestaurantItem(object):
 			review_df = pd.DataFrame(tagged_reviews_sent, columns=['review_sent'])
 			freq_features = self.frequent_itemsets(rest_features)
 			opinion_words = self.extract_opinion_words(freq_features, review_df)
-			return
+			print(opinion_words)
 									
 if __name__ == '__main__':
 	process = ProcessRestaurantItem()
