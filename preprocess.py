@@ -44,6 +44,15 @@ class ProcessRestaurantItem(object):
 		review = re.sub(r"\'m", " am", review)
 		return review
 	
+	
+	def add_rest_features(self, freq_features):
+		manual_rest_features = ['value', 'location', 'food', 'service',
+								'price', 'atmosphere', 'vibe', 'cuisine',
+								'ambience', 'decor', 'quality']
+
+		freq_features.extend(manual_rest_features)
+		return freq_features
+
 	def frequent_itemsets(self, rest_features):
 		te = TransactionEncoder()
 		te_ary = te.fit(rest_features).transform(rest_features)
@@ -55,6 +64,7 @@ class ProcessRestaurantItem(object):
 		for itemset in frequent_itemsets['itemsets']:
 			for item in itemset:
 				freq_features.append(item)
+		freq_features = self.add_rest_features(freq_features)
 		return set(freq_features)
 	
 	def extract_opinion_words(self, freq_features):
