@@ -66,14 +66,17 @@ class ProcessRestaurantItem(object):
 		return set(freq_features)
 	
 	def extract_opinion_words(self, freq_features, review_df):
-		feaure_opinion_map = list()
+		opinion_words = list()
 		for review_sent in review_df['review_sent']:
+			print(review_sent)
 			review_no_tag = [words[0] for words in review_sent]
 			for feature in freq_features:
-				if feature in review_no_tags:
+				if feature in review_no_tag:
 					for words in review_sent:
-						pass 
-								
+						if (words[1] == 'JJ'):
+							opinion_words.append(words[0].lower())
+		return set(opinion_words)
+	
 	def process_reviews(self):
 		# one restaurant at a time -> summarize reviews 
 		for i, review_collection in enumerate(self.df['rest_reviews']):
