@@ -76,6 +76,10 @@ class ProcessRestaurantItem(object):
 							opinion_words.append(words[0].lower())
 		return set(opinion_words)
 	
+	def opinion_orientation(self, opinion_words):
+		for word in opinion_words:
+			print(word)
+	
 	def process_reviews(self):
 		# one restaurant at a time -> summarize reviews 
 		for i, review_collection in enumerate(self.df['rest_reviews']):
@@ -121,7 +125,8 @@ class ProcessRestaurantItem(object):
 			review_df = pd.DataFrame(tagged_reviews_sent, columns=['review_sent'])
 			freq_features = self.frequent_itemsets(rest_features)
 			opinion_words = self.extract_opinion_words(freq_features, review_df)
-			print(opinion_words)
+			orientation_opinion_words = self.opinion_orientation(opinion_words)
+			return
 									
 if __name__ == '__main__':
 	process = ProcessRestaurantItem()
