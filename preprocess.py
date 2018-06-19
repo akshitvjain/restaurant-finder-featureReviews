@@ -8,6 +8,8 @@ from nltk.stem.wordnet import WordNetLemmatizer
 lmtzr = WordNetLemmatizer()
 from nltk.corpus import stopwords
 stop = set(stopwords.words('english'))
+from nltk.corpus import wordnet as wn
+from nltk.sentiment.vader import SentimentIntensityAnalyzer
 from mlxtend.preprocessing import TransactionEncoder
 from mlxtend.frequent_patterns import apriori
 
@@ -68,6 +70,7 @@ class ProcessRestaurantItem(object):
 	def extract_opinion_words(self, freq_features, review_df):
 		opinion_words = list()
 		for review_sent in review_df['review_sent']:
+			print(review_sent)
 			review_no_tag = [words[0] for words in review_sent]
 			for feature in freq_features:
 				if feature in review_no_tag:
@@ -77,9 +80,14 @@ class ProcessRestaurantItem(object):
 		return set(opinion_words)
 	
 	def opinion_orientation(self, opinion_words):
+		# lists to save the opinion based on orientation
+		pos_opinion = ['authentic', 'cheap', 'inexpensive', 'quick', 'warm', 'hot']
+		neg_opinion = ['slow', 'expensive', 'disappointed', 'bland', 'overdone', 'overcooked']
+		sid = SentimentIntensityAnalyzer()
+		# grow the orientation lists based on user reviews
 		for word in opinion_words:
-			print(word)
-	
+			print(word, sid.polarity_scores(word))
+
 	def process_reviews(self):
 		# one restaurant at a time -> summarize reviews 
 		for i, review_collection in enumerate(self.df['rest_reviews']):
@@ -126,7 +134,7 @@ class ProcessRestaurantItem(object):
 			freq_features = self.frequent_itemsets(rest_features)
 			opinion_words = self.extract_opinion_words(freq_features, review_df)
 			orientation_opinion_words = self.opinion_orientation(opinion_words)
-			return
+			print('\n')
 									
 if __name__ == '__main__':
 	process = ProcessRestaurantItem()
