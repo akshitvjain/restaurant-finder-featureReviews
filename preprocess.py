@@ -70,7 +70,6 @@ class ProcessRestaurantItem(object):
 	def extract_opinion_words(self, freq_features, review_df):
 		opinion_words = list()
 		for review_sent in review_df['review_sent']:
-			print(review_sent)
 			review_no_tag = [words[0] for words in review_sent]
 			for feature in freq_features:
 				if feature in review_no_tag:
@@ -81,12 +80,17 @@ class ProcessRestaurantItem(object):
 	
 	def opinion_orientation(self, opinion_words):
 		# lists to save the opinion based on orientation
+		# some initial opinion words
 		pos_opinion = ['authentic', 'cheap', 'inexpensive', 'quick', 'warm', 'hot']
 		neg_opinion = ['slow', 'expensive', 'disappointed', 'bland', 'overdone', 'overcooked']
 		sid = SentimentIntensityAnalyzer()
 		# grow the orientation lists based on user reviews
 		for word in opinion_words:
-			print(word, sid.polarity_scores(word))
+			if sid.polarity_scores(word)['pos'] == 1.0:
+				pos_opinion.append(word)
+			elif sid.polarity_scores(word)['neg'] == 1.0:
+				neg_opinion.append(word)
+		return set(pos_opinion), set(neg_opinion)
 
 	def process_reviews(self):
 		# one restaurant at a time -> summarize reviews 
@@ -133,8 +137,8 @@ class ProcessRestaurantItem(object):
 			review_df = pd.DataFrame(tagged_reviews_sent, columns=['review_sent'])
 			freq_features = self.frequent_itemsets(rest_features)
 			opinion_words = self.extract_opinion_words(freq_features, review_df)
+			# store the pos, neg opinion words
 			orientation_opinion_words = self.opinion_orientation(opinion_words)
-			print('\n')
 									
 if __name__ == '__main__':
 	process = ProcessRestaurantItem()
