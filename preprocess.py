@@ -70,6 +70,7 @@ class ProcessRestaurantItem(object):
 	def extract_opinion_words(self, freq_features, review_df):
 		opinion_words = list()
 		for review_sent in review_df['review_sent']:
+			#print(review_sent)
 			review_no_tag = [words[0] for words in review_sent]
 			for feature in freq_features:
 				if feature in review_no_tag:
@@ -92,6 +93,11 @@ class ProcessRestaurantItem(object):
 				neg_opinion.append(word)
 		return set(pos_opinion), set(neg_opinion)
 
+	def sentence_orientation(self, pos_opinions, neg_opinions, review_df):
+		# feature -> opinion
+		# plan to identify the orientation of a review sentence
+		pass
+
 	def process_reviews(self):
 		# one restaurant at a time -> summarize reviews 
 		for i, review_collection in enumerate(self.df['rest_reviews']):
@@ -104,8 +110,6 @@ class ProcessRestaurantItem(object):
 				for sentence in review_sentences:
 					# contraction to decontraction
 					sentence = self.decontracted(sentence)
-					# remove punctuation
-					sentence = re.sub(r'[^\w\s]','', sentence)
 					# tokenize sentence
 					token_sentence = nltk.word_tokenize(sentence)
 					# part-of-speech tagging
@@ -139,6 +143,7 @@ class ProcessRestaurantItem(object):
 			opinion_words = self.extract_opinion_words(freq_features, review_df)
 			# store the pos, neg opinion words
 			orientation_opinion_words = self.opinion_orientation(opinion_words)
+			print(orientation_opinion_words[0])
 									
 if __name__ == '__main__':
 	process = ProcessRestaurantItem()
