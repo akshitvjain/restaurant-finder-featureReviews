@@ -118,7 +118,7 @@ class ProcessRestaurantItem(object):
 					processed_reviews.append([str_r, -1])
 		processed_reviews = np.array(processed_reviews)
 		processed_reviews_df = pd.DataFrame(processed_reviews, columns=['reviews','sentiment'])
-		print(processed_reviews_df.head())
+		return processed_reviews_df
 
 	def word_orientation(self, word, pos_opinions, neg_opinions, review_no_tag):
 		if word in pos_opinions:
@@ -142,7 +142,10 @@ class ProcessRestaurantItem(object):
 				if abs(op_index - nw_index) <= 5:
 					return True
 		return False 
-			
+	
+	def generate_summary(self, freq_features, processed_reviews_df):
+		pass
+
 	def process_reviews(self):
 		# one restaurant at a time -> summarize reviews 
 		for i, review_collection in enumerate(self.df['rest_reviews']):
@@ -188,7 +191,8 @@ class ProcessRestaurantItem(object):
 			opinion_words = self.extract_opinion_words(freq_features, review_df)
 			# store the pos, neg opinion words
 			pos_opinion, neg_opinion = self.opinion_orientation(opinion_words)
-			self.sentence_orientation(pos_opinion, neg_opinion, review_df)
+			processed_reviews_df = self.sentence_orientation(pos_opinion, neg_opinion, review_df)
+			self.generate_summary(freq_features, processed_reviews_df) 
 									
 if __name__ == '__main__':
 	process = ProcessRestaurantItem()
