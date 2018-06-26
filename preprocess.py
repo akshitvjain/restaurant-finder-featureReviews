@@ -94,10 +94,40 @@ class ProcessRestaurantItem(object):
 		return set(pos_opinion), set(neg_opinion)
 
 	def sentence_orientation(self, pos_opinions, neg_opinions, review_df):
-		# feature -> opinion
-		# plan to identify the orientation of a review sentence
-		pass
+		sid = SentimentIntensityAnalyzer()
+		for rev_sent in review_df['review_sent']:
+			review_no_tag = [words[0] for words in rev_sent]
+			str_r = ' '.join(review_no_tag)
+			orientation = 0
+			for word in review_no_tag:
+				if word in pos_opinions or word in neg_opinions:
+					orientation += self.word_orientation(word, pos_opinions, \
+													neg_opinions, review_no_tag)
+			print(str_r, orientation)
 
+	def word_orientation(self, word, pos_opinions, neg_opinions, review_no_tag):
+		if word in pos_opinions:
+			if self.diff_negation(word, review_no_tag):
+				return -1
+			else:
+				return 1
+		elif word in neg_opinions:
+			if self.diff_negation(word, review_no_tag):
+				return 1
+			else:
+				return -1
+
+	def diff_negation(self, word, review_no_tag):
+		negation_words = ['no', 'not', 'yet', 'but', 'nevertheless', 'while'
+						'however', 'instead', 'despite', 'although', 'though']
+		for nw in negation_words:
+			if nw in review_no_tag:
+				op_index = review_no_tag.index(word)
+				nw_index = review_no_tag.index(nw)
+				if abs(op_index - nw_index) <= 5:
+					return True
+		return False 
+			
 	def process_reviews(self):
 		# one restaurant at a time -> summarize reviews 
 		for i, review_collection in enumerate(self.df['rest_reviews']):
@@ -127,7 +157,7 @@ class ProcessRestaurantItem(object):
 					features = []
 					for subtree in sent_tree.subtrees():
 						if (subtree.label() == 'NP'):
-							nps = ' '.join(word[0] for word in subtree.leaves())
+							nps = ''.join(word[0] for word in subtree.leaves())
 							features.append(nps)
 							# remove stopwords
 							features = [feat.lower() for feat in features if i not in stop]
@@ -142,8 +172,8 @@ class ProcessRestaurantItem(object):
 			freq_features = self.frequent_itemsets(rest_features)
 			opinion_words = self.extract_opinion_words(freq_features, review_df)
 			# store the pos, neg opinion words
-			orientation_opinion_words = self.opinion_orientation(opinion_words)
-			print(orientation_opinion_words[0])
+			pos_opinion, neg_opinion = self.opinion_orientation(opinion_words)
+			self.sentence_orientation(pos_opinion, neg_opinion, review_df)
 									
 if __name__ == '__main__':
 	process = ProcessRestaurantItem()
