@@ -95,15 +95,30 @@ class ProcessRestaurantItem(object):
 
 	def sentence_orientation(self, pos_opinions, neg_opinions, review_df):
 		sid = SentimentIntensityAnalyzer()
+		processed_reviews = []
 		for rev_sent in review_df['review_sent']:
 			review_no_tag = [words[0] for words in rev_sent]
 			str_r = ' '.join(review_no_tag)
 			orientation = 0
 			for word in review_no_tag:
-				if word in pos_opinions or word in neg_opinions:
-					orientation += self.word_orientation(word, pos_opinions, \
+				if word.lower() in pos_opinions or word.lower() in neg_opinions:
+					orientation += self.word_orientation(word.lower(), pos_opinions, \
 													neg_opinions, review_no_tag)
-			print(str_r, orientation)
+			if orientation > 0:
+				processed_reviews.append([str_r, 1])
+			elif orientation < 0:
+				processed_reviews.append([str_r, -1])
+			else:
+				ori = sid.polarity_scores(str_r)['compound']
+				if ori == 0:
+					processed_reviews.append([str_r, 0])
+				elif ori > 0:
+					processed_reviews.append([str_r, 1])
+				else:
+					processed_reviews.append([str_r, -1])
+		processed_reviews = np.array(processed_reviews)
+		processed_reviews_df = pd.DataFrame(processed_reviews, columns=['reviews','sentiment'])
+		print(processed_reviews_df.head())
 
 	def word_orientation(self, word, pos_opinions, neg_opinions, review_no_tag):
 		if word in pos_opinions:
