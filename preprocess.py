@@ -102,8 +102,8 @@ class ProcessRestaurantItem(object):
 			orientation = 0
 			for word in review_no_tag:
 				if word.lower() in pos_opinions or word.lower() in neg_opinions:
-					orientation += self.word_orientation(word.lower(), pos_opinions, \
-													neg_opinions, review_no_tag)
+					orientation += self.word_orientation(word.lower(), pos_opinions,
+														neg_opinions, review_no_tag)
 			if orientation > 0:
 				processed_reviews.append([str_r, 1])
 			elif orientation < 0:
