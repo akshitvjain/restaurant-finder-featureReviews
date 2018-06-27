@@ -144,8 +144,16 @@ class ProcessRestaurantItem(object):
 		return False 
 	
 	def generate_summary(self, freq_features, processed_reviews_df):
-		pass
-
+		feature_summary_reviews = []
+		for feature in freq_features:
+			for i, review in enumerate(processed_reviews_df['reviews']):
+				if feature in review:
+					feature_summary_reviews.append([feature, review,
+								processed_reviews_df['sentiment'][i]])	
+		feature_summary_df = pd.DataFrame(feature_summary_reviews, 
+							columns=['feature', 'review', 'sentiment'])
+		return feature_summary_df
+		
 	def process_reviews(self):
 		# one restaurant at a time -> summarize reviews 
 		for i, review_collection in enumerate(self.df['rest_reviews']):
@@ -192,8 +200,8 @@ class ProcessRestaurantItem(object):
 			# store the pos, neg opinion words
 			pos_opinion, neg_opinion = self.opinion_orientation(opinion_words)
 			processed_reviews_df = self.sentence_orientation(pos_opinion, neg_opinion, review_df)
-			self.generate_summary(freq_features, processed_reviews_df) 
-									
+			feature_summary_df = self.generate_summary(freq_features, processed_reviews_df) 
+
 if __name__ == '__main__':
 	process = ProcessRestaurantItem()
 	process.load_mongodb_to_pandas()
