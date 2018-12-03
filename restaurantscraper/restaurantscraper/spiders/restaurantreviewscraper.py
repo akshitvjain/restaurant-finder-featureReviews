@@ -5,8 +5,8 @@ from scrapy.selector import Selector
 from selenium import webdriver
 from restaurantscraper.items import RestaurantscraperItem
 
-MAX_RESTAURANTS = 2
-MAX_REVIEWS = 1
+MAX_RESTAURANTS = 10	# collect information from each
+MAX_REVIEWS = 200		# collect reviews from each restaurants
 
 class RestaurantreviewscraperSpider(scrapy.Spider):
 	name = 'restaurantreviewscraper'
@@ -48,8 +48,9 @@ class RestaurantreviewscraperSpider(scrapy.Spider):
 		# extract restaurant addr 
 		rest_item['rest_addr'] = response.xpath \
 			('//div[@class="blEntry address  clickable colCnt2"]//span/text()').extract() 
-		# extract cuisine info	
-		rest_item['rest_cuisines'] = response.css('div.text::text').extract_first()
+		# extract cuisine info
+		rest_item['rest_cuisines'] = \
+			response.xpath('//*[@id="RESTAURANT_DETAILS"]/div[2]/div[1]/div[3]/div[2]/a/text()').extract()
 		# extract restaurant rank
 		if (response.css('div.prw_rup.prw_restaurants_header_eatery_pop_index')):
 			rest_item['rest_rank'] = sel.xpath('//b/span/text()').extract()[0]
@@ -62,8 +63,8 @@ class RestaurantreviewscraperSpider(scrapy.Spider):
 			rest_item['rest_rating'] = 0
 		# extract price
 		if (response.css('span.text')):
-			rest_item['rest_price'] = response.css('span.text::text').extract_first() \
-										.encode("utf-8")
+			rest_item['rest_price'] = \
+				response.xpath('//*[@id="RESTAURANT_DETAILS"]/div[2]/div[1]/div[2]/div[2]/span/text()').extract_first()
 		else:
 			rest_item['res_price'] = None
 		# extract number of reviews 
