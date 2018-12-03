@@ -13,4 +13,5 @@ class RestaurantscraperItem(scrapy.Item):
 	rest_rating = scrapy.Field()
 	rest_price = scrapy.Field()
 	rest_total_reviews = scrapy.Field()
+	rest_cuisines = scrapy.Field()
 	rest_reviews = scrapy.Field()
