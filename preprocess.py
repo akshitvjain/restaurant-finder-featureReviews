@@ -16,8 +16,8 @@ from mlxtend.frequent_patterns import apriori
 class ProcessRestaurantItem(object):
 	
 	db_name = 'restaurantinfo'
-	fields = ['rest_name', 'rest_rank', 'rest_addr', 'rest_rating', 'rest_price', 'rest_total_reviews', 'rest_reviews']
-	df = None
+	fields = ['rest_reviews']
+	df = None	
 
 	def __init__(self): 
 		# Setup Client for MongoDB
@@ -27,9 +27,7 @@ class ProcessRestaurantItem(object):
 	def load_mongodb_to_pandas(self):	
 		restaurants = []
 		for doc in self.db.restaurantreviews.find():
-			restaurants.append([doc['rest_name'], doc['rest_rank'], doc['rest_addr'],
-								doc['rest_rating'], doc['rest_price'],
-								doc['rest_total_reviews'], doc['rest_reviews']])
+			restaurants.append([doc['rest_reviews']])
 		self.df = pd.DataFrame(restaurants, columns=self.fields)
 
 	def decontracted(self, review):
@@ -109,18 +107,14 @@ class ProcessRestaurantItem(object):
 			elif orientation < 0:
 				processed_reviews.append([str_r, -1])
 			else:
-				ori = sid.polarity_scores(str_r)['compound']
-				if ori == 0:
-					processed_reviews.append([str_r, 0])
-				elif ori > 0:
-					processed_reviews.append([str_r, 1])
-				else:
-					processed_reviews.append([str_r, -1])
+				pass
+				# ori = sid.polarity_scores(str_r)['compound']
+	
 		processed_reviews = np.array(processed_reviews)
 		processed_reviews_df = pd.DataFrame(processed_reviews, columns=['reviews','sentiment'])
 		return processed_reviews_df
 
-	def word_orientation(self, word, pos_opinions, neg_opinions, review_no_tag):
+	def word_orientation(self, word, pos_opinions, neg_opinions, review_no_tag):	
 		if word in pos_opinions:
 			if self.diff_negation(word, review_no_tag):
 				return -1
@@ -200,7 +194,8 @@ class ProcessRestaurantItem(object):
 			# store the pos, neg opinion words
 			pos_opinion, neg_opinion = self.opinion_orientation(opinion_words)
 			processed_reviews_df = self.sentence_orientation(pos_opinion, neg_opinion, review_df)
-			feature_summary_df = self.generate_summary(freq_features, processed_reviews_df) 
+			feature_summary_df = self.generate_summary(freq_features, processed_reviews_df)
+			print(feature_summary_df)
 
 if __name__ == '__main__':
 	process = ProcessRestaurantItem()
