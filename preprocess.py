@@ -68,7 +68,6 @@ class ProcessRestaurantItem(object):
 	def extract_opinion_words(self, freq_features, review_df):
 		opinion_words = list()
 		for review_sent in review_df['review_sent']:
-			#print(review_sent)
 			review_no_tag = [words[0] for words in review_sent]
 			for feature in freq_features:
 				if feature in review_no_tag:
@@ -108,8 +107,8 @@ class ProcessRestaurantItem(object):
 				processed_reviews.append([str_r, -1])
 			else:
 				pass
-				# ori = sid.polarity_scores(str_r)['compound']
-	
+				# ori = sid.polarity_scores(str_r)['compound']	
+
 		processed_reviews = np.array(processed_reviews)
 		processed_reviews_df = pd.DataFrame(processed_reviews, columns=['reviews','sentiment'])
 		return processed_reviews_df
@@ -129,6 +128,7 @@ class ProcessRestaurantItem(object):
 	def diff_negation(self, word, review_no_tag):
 		negation_words = ['no', 'not', 'yet', 'but', 'nevertheless', 'while'
 						'however', 'instead', 'despite', 'although', 'though']
+		review_no_tag = [w.lower() for w in review_no_tag]
 		for nw in negation_words:
 			if nw in review_no_tag:
 				op_index = review_no_tag.index(word)
