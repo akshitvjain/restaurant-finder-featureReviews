@@ -6,7 +6,7 @@ from selenium import webdriver
 from restaurantscraper.items import RestaurantscraperItem
 
 MAX_RESTAURANTS = 10	# collect information from each
-MAX_REVIEWS = 200		# collect reviews from each restaurants
+MAX_REVIEWS = 20		# collect reviews from each restaurants
 
 class RestaurantreviewscraperSpider(scrapy.Spider):
 	name = 'restaurantreviewscraper'
@@ -46,8 +46,8 @@ class RestaurantreviewscraperSpider(scrapy.Spider):
 		# extract restaurant name
 		rest_item['rest_name'] = sel.xpath('//h1/text()').extract()[1]
 		# extract restaurant addr 
-		rest_item['rest_addr'] = response.xpath \
-			('//div[@class="blEntry address  clickable colCnt2"]//span/text()').extract() 
+		street = response.xpath('//*[@id="taplc_restaurants_detail_info_content_0"]/div[4]/div[2]/span[2]/text()').extract_first()
+		rest_item['rest_addr'] = street + ", London, England" 
 		# extract cuisine info
 		rest_item['rest_cuisines'] = \
 			response.xpath('//*[@id="RESTAURANT_DETAILS"]/div[2]/div[1]/div[3]/div[2]/a/text()').extract()
@@ -83,7 +83,7 @@ class RestaurantreviewscraperSpider(scrapy.Spider):
 				driver.get(url)
 			except:
 				pass
-			time.sleep(3)
+			time.sleep(4)
 			while len(reviews) < MAX_REVIEWS:
 				reviews += self.parse_reviews(driver)
 				print('Fetched a total of {} reviews by now.'.format(len(reviews)))
@@ -91,7 +91,7 @@ class RestaurantreviewscraperSpider(scrapy.Spider):
 				if 'disabled' in next_button.get_attribute('class'):
 					break
 				next_button.click()
-				time.sleep(4)
+				time.sleep(5)
 			rest_item['rest_reviews'] = reviews
 			driver.close()
 		yield rest_item
@@ -102,7 +102,7 @@ class RestaurantreviewscraperSpider(scrapy.Spider):
 			driver.find_element_by_class_name('ulBlueLinks').click()
 		except:
 			pass
-		time.sleep(4)
+		time.sleep(5)
 		review_containers = driver.find_elements_by_class_name('reviewSelector')
 		for review in review_containers:
 			review_text = review.find_element_by_class_name('partial_entry').text.replace('\n', '')
