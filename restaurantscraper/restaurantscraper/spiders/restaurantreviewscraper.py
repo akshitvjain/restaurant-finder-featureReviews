@@ -51,7 +51,13 @@ class RestaurantreviewscraperSpider(scrapy.Spider):
 
 		# extract restaurant addr 
 		street = response.xpath('//*[@id="taplc_restaurants_detail_info_content_0"]/div[4]/div[2]/span[2]/text()').extract_first()
-		rest_item['rest_addr'] = street + ", London, England" 
+		rest_item['rest_addr'] = street + ", London, UK" 
+
+		# extract location
+		if (response.xpath('//*[@id="LOCATION_TAB"]/div[2]/div[1]/div/div[1]/text()')):
+			rest_item['rest_location'] = response.xpath('//*[@id="LOCATION_TAB"]/div[2]/div[1]/div/div[1]/text()').extract_first().replace('\n',"")
+		else:
+			rest_item['rest_location'] = "Unknown"
 
 		# extract cuisine info
 		rest_item['rest_cuisines'] = \
@@ -70,21 +76,60 @@ class RestaurantreviewscraperSpider(scrapy.Spider):
 			rest_item['rest_rating'] = 0
 
 		# extract price
-		hasPrice = (response.xpath('//*[@id="RESTAURANT_DETAILS"]/div[2]/div[1]/div[2]/div[1]/text()').extract_first().replace("\n", ""))
-		if (hasPrice == "Average prices"):
-			rest_item['rest_price'] = \
-				response.xpath('//*[@id="RESTAURANT_DETAILS"]/div[2]/div[1]/div[2]/div[2]/span/text()').extract_first()
-		else:
-			rest_item['rest_price'] = None
+		rest_item['rest_price'] = \
+			response.xpath('//*[@id="taplc_restaurants_detail_info_content_0"]/div[2]/span/span/text()').extract_first()
 
-		# extract number of reviews 
+		# extract restaurant features	
+
+		row_four_features = \
+		(response.xpath('//*[@id="RESTAURANT_DETAILS"]/div[2]/div[1]/div[4]/div[1]/text()').extract_first().replace("\n", ""))
+		row_five_features = \
+		(response.xpath('//*[@id="RESTAURANT_DETAILS"]/div[2]/div[1]/div[5]/div[1]/text()').extract_first().replace("\n", ""))
+		
+		if (row_four_features == "Restaurant features"):
+			rest_item['rest_features'] = \
+			response.xpath('//*[@id="RESTAURANT_DETAILS"]/div[2]/div[1]/div[4]/div[2]/text()').extract_first()
+		elif (row_five_features == "Restaurant features"):
+			rest_item['rest_features'] = \
+			response.xpath('//*[@id="RESTAURANT_DETAILS"]/div[2]/div[1]/div[5]/div[2]/text()').extract_first()
+		else:
+			rest_item['rest_features'] = None 
+
+		# extract restaurant meals
+		
+		row_three_meals = \
+		(response.xpath('//*[@id="RESTAURANT_DETAILS"]/div[2]/div[1]/div[3]/div[1]/text()').extract_first().replace("\n", ""))
+		row_four_meals = \
+		(response.xpath('//*[@id="RESTAURANT_DETAILS"]/div[2]/div[1]/div[4]/div[1]/text()').extract_first().replace("\n", ""))
+
+		if (row_three_meals == "Meals"):
+			rest_item['rest_meals'] = \
+			response.xpath('//*[@id="RESTAURANT_DETAILS"]/div[2]/div[1]/div[3]/div[2]/text()').extract_first()
+		elif (row_four_meals == "Meals"):
+			rest_item['rest_meals'] = \
+			response.xpath('//*[@id="RESTAURANT_DETAILS"]/div[2]/div[1]/div[4]/div[2]/text()').extract_first()
+		else:
+			rest_item['rest_meals'] = None
+
+		# extract positive and negative reviews count
+		excellent_count = int(response.xpath('//*[@id="ratingFilter"]/ul/li[1]/label/span[2]/text()').extract_first())
+		good_count = int(response.xpath('//*[@id="ratingFilter"]/ul/li[2]/label/span[2]/text()').extract_first())
+		rest_item['rest_pos_count'] = excellent_count + good_count
+
+		avg_count = int(response.xpath('//*[@id="ratingFilter"]/ul/li[3]/label/span[2]/text()').extract_first())
+		poor_count = int(response.xpath('//*[@id="ratingFilter"]/ul/li[4]/label/span[2]/text()').extract_first())
+		terrible_count = int(response.xpath('//*[@id="ratingFilter"]/ul/li[5]/label/span[2]/text()').extract_first())
+		rest_item['rest_neg_count'] = avg_count + poor_count + terrible_count
+
+		# extract total number of reviews 
 		if (response.css('a.seeAllReviews')):
 			rest_item['rest_total_reviews'] = \
-			int(response.css('span.reviews_header_count.block_title::text') \
+			int(response.xpath('//*[@id="taplc_location_review_filter_controls_0_form"]/div[4]/ul/li[2]/label/span/text()') \
 								.extract_first().strip('()').replace(",", ""))
 		else:
 			hasReviews = False
 			rest_item['rest_total_reviews'] = 0
+
 		# extract reviews 
 		if hasReviews:
 			reviews = []
