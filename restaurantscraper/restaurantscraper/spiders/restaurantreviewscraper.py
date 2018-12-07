@@ -5,15 +5,17 @@ from scrapy.selector import Selector
 from selenium import webdriver
 from restaurantscraper.items import RestaurantscraperItem
 
-MAX_RESTAURANTS = 10	# collect information from each
-MAX_REVIEWS = 20		# collect reviews from each restaurants
+MAX_RESTAURANTS = 1		# collect information from each
+MAX_REVIEWS = 1		# collect reviews from each restaurants
 
 class RestaurantreviewscraperSpider(scrapy.Spider):
 	name = 'restaurantreviewscraper'
 	allowed_domains = ['tripadvisor.com']
 	start_urls = [
-		'https://www.tripadvisor.com/Restaurants-g186338-London_England.html'
-	]	
+		"https://www.tripadvisor.in/Restaurants-g186525-Edinburgh_Scotland.html"
+	]
+	#	"https://www.tripadvisor.com/Restaurants-g186338-London_England.html"
+		
 	
 	def __init__(self):
 		self.restaurants_scraped = 0
@@ -51,23 +53,15 @@ class RestaurantreviewscraperSpider(scrapy.Spider):
 
 		# extract restaurant addr 
 		street = response.xpath('//*[@id="taplc_restaurants_detail_info_content_0"]/div[4]/div[2]/span[2]/text()').extract_first()
-		rest_item['rest_addr'] = street + ", London, UK" 
-
-		# extract location
-		if (response.xpath('//*[@id="LOCATION_TAB"]/div[2]/div[1]/div/div[1]/text()')):
-			rest_item['rest_location'] = response.xpath('//*[@id="LOCATION_TAB"]/div[2]/div[1]/div/div[1]/text()').extract_first().replace('\n',"")
-		else:
-			rest_item['rest_location'] = "Unknown"
+		city = response.xpath('//*[@id="taplc_trip_planner_breadcrumbs_0"]/ul/li[4]/a/span/text()').extract_first()
+		country = response.xpath('//*[@id="taplc_trip_planner_breadcrumbs_0"]/ul/li[3]/a/span/text()').extract_first()
+		rest_item['rest_street'] = street
+		rest_item['rest_city'] = city
+		rest_item['rest_country'] = country
 
 		# extract cuisine info
 		rest_item['rest_cuisines'] = \
 			response.xpath('//*[@id="taplc_restaurants_detail_info_content_0"]/div[2]/div/div[2]/div[2]/text()').extract_first()
-
-		# extract restaurant rank
-		if (response.css('div.prw_rup.prw_restaurants_header_eatery_pop_index')):
-			rest_item['rest_rank'] = sel.xpath('//b/span/text()').extract()[0]
-		else:
-			rest_item['rest_rank'] = None
 
 		# extract ratings
 		if (response.css('span.overallRating')):
