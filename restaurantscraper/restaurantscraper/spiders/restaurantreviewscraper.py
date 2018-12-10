@@ -5,17 +5,16 @@ from scrapy.selector import Selector
 from selenium import webdriver
 from restaurantscraper.items import RestaurantscraperItem
 
-MAX_RESTAURANTS = 1		# collect information from each
+MAX_RESTAURANTS = 1	# collect information from each
 MAX_REVIEWS = 1		# collect reviews from each restaurants
 
 class RestaurantreviewscraperSpider(scrapy.Spider):
 	name = 'restaurantreviewscraper'
 	allowed_domains = ['tripadvisor.com']
 	start_urls = [
-		"https://www.tripadvisor.in/Restaurants-g186525-Edinburgh_Scotland.html"
-	]
-	#	"https://www.tripadvisor.com/Restaurants-g186338-London_England.html"
-		
+		#"https://www.tripadvisor.in/Restaurants-g186525-Edinburgh_Scotland.html"	
+		"https://www.tripadvisor.com/Restaurants-g186338-London_England.html"
+	]	
 	
 	def __init__(self):
 		self.restaurants_scraped = 0
@@ -108,12 +107,15 @@ class RestaurantreviewscraperSpider(scrapy.Spider):
 		# extract positive and negative reviews count
 		excellent_count = int(response.xpath('//*[@id="ratingFilter"]/ul/li[1]/label/span[2]/text()').extract_first())
 		good_count = int(response.xpath('//*[@id="ratingFilter"]/ul/li[2]/label/span[2]/text()').extract_first())
-		rest_item['rest_pos_count'] = excellent_count + good_count
+		rest_item['review_excellent_count'] = excellent_count 
+		rest_item['review_good_count'] = good_count
 
 		avg_count = int(response.xpath('//*[@id="ratingFilter"]/ul/li[3]/label/span[2]/text()').extract_first())
 		poor_count = int(response.xpath('//*[@id="ratingFilter"]/ul/li[4]/label/span[2]/text()').extract_first())
 		terrible_count = int(response.xpath('//*[@id="ratingFilter"]/ul/li[5]/label/span[2]/text()').extract_first())
-		rest_item['rest_neg_count'] = avg_count + poor_count + terrible_count
+		rest_item['review_avg_count'] = avg_count 
+		rest_item['review_poor_count'] = poor_count
+		rest_item['review_terrible_count'] = terrible_count
 
 		# extract total number of reviews 
 		if (response.css('a.seeAllReviews')):
