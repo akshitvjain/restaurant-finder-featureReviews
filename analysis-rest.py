@@ -56,9 +56,19 @@ class AnalyzeRestaurantItem(object):
 										int(doc['review_poor_count']) + \
 										int(doc['review_terrible_count'])
 
+				# process and categorize price
+				price = doc['rest_price'].replace(" - ", "")
+
+				if (len(price) == 1):
+					rest_price = "AFFORDABLE"
+				elif(len(price) == 4):
+					rest_price = "MODERATE"
+				else:
+					rest_price = "EXPENSIVE"	
+				
 				# load restaurant details, reviews
 				rest_info.append([doc['rest_name'], float(lat), float(lon), doc['rest_street'], \
-								doc['rest_city'], doc['rest_country'], doc['rest_rating'], doc['rest_price'], \
+								doc['rest_city'], doc['rest_country'], doc['rest_rating'], rest_price, \
 								doc['review_excellent_count'], doc['review_good_count'], doc['review_avg_count'], \
 								doc['review_poor_count'], doc['review_terrible_count'], \
 								positive_review_count, negative_review_count, doc['rest_total_reviews']])
