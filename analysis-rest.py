@@ -9,11 +9,11 @@ class AnalyzeRestaurantItem(object):
 
 	db_name = 'restaurantinfo'
 	info_fields = ['rest_name', 'lat', 'lon', 'rest_street', 'rest_city', \
-				'rest_country', 'rest_rating', 'review_excellent_count', \
+				'rest_country', 'rest_rating', 'rest_price', 'review_excellent_count', \
 				'review_good_count', 'review_avg_count', 'review_poor_count', \
 				'review_terrible_count', 'positive_review_count', 'negative_review_count', \
 				'rest_total_reviews']
-	cuisine_fields = ['rest_name', 'cuisine', 'price']
+	cuisine_fields = ['rest_name', 'cuisine']
 	features_fields = ['rest_name', 'rest_features']
 	meals_fields = ['rest_name', 'rest_meals']
 
@@ -58,7 +58,7 @@ class AnalyzeRestaurantItem(object):
 
 				# load restaurant details, reviews
 				rest_info.append([doc['rest_name'], float(lat), float(lon), doc['rest_street'], \
-								doc['rest_city'], doc['rest_country'], doc['rest_rating'], \
+								doc['rest_city'], doc['rest_country'], doc['rest_rating'], doc['rest_price'], \
 								doc['review_excellent_count'], doc['review_good_count'], doc['review_avg_count'], \
 								doc['review_poor_count'], doc['review_terrible_count'], \
 								positive_review_count, negative_review_count, doc['rest_total_reviews']])
@@ -66,7 +66,7 @@ class AnalyzeRestaurantItem(object):
 				# load restaurant cuisines, price data
 				cuisines = doc['rest_cuisines'].split(',')
 				for cuisine in cuisines:
-					rest_cuisine.append([doc['rest_name'], cuisine.strip("\n"), doc['rest_price']])
+					rest_cuisine.append([doc['rest_name'], cuisine.strip("\n")])
 				# load restaurant features
 				features = doc['rest_features'].split(',')
 				for feature in features:
