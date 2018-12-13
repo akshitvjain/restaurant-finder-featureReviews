@@ -74,17 +74,20 @@ class AnalyzeRestaurantItem(object):
 								positive_review_count, negative_review_count, doc['rest_total_reviews']])
 
 				# load restaurant cuisines, price data
-				cuisines = doc['rest_cuisines'].split(',')
-				for cuisine in cuisines:
-					rest_cuisine.append([doc['rest_name'], cuisine.strip("\n")])
+				if doc['rest_cuisines']:
+					cuisines = doc['rest_cuisines'].split(',')
+					for cuisine in cuisines:
+						rest_cuisine.append([doc['rest_name'], cuisine.strip("\n")])
 				# load restaurant features
-				features = doc['rest_features'].split(',')
-				for feature in features:
-					rest_features.append([doc['rest_name'], feature.strip("\n")])
-				# load restaurant meals 
-				meals = doc['rest_meals'].split(',')
-				for meal in meals:
-					rest_meals.append([doc['rest_name'], meal.strip("\n")])
+				if doc['rest_features']:
+					features = doc['rest_features'].split(',')
+					for feature in features:
+						rest_features.append([doc['rest_name'], feature.strip("\n")])
+				# load restaurant meals
+				if doc['rest_meals']:
+					meals = doc['rest_meals'].split(',')
+					for meal in meals:
+						rest_meals.append([doc['rest_name'], meal.strip("\n")])
 
 		self.info_df = pd.DataFrame(rest_info, columns=self.info_fields)
 		self.cuisines_df = pd.DataFrame(rest_cuisine, columns=self.cuisine_fields)
