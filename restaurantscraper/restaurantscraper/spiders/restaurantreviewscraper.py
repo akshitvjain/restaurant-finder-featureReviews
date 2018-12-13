@@ -5,15 +5,15 @@ from scrapy.selector import Selector
 from selenium import webdriver
 from restaurantscraper.items import RestaurantscraperItem
 
-MAX_RESTAURANTS = 1	# collect information from each
-MAX_REVIEWS = 1		# collect reviews from each restaurants
+MAX_RESTAURANTS = 15 	# collect information from each
+MAX_REVIEWS = 10		# collect reviews from each restaurants
 
 class RestaurantreviewscraperSpider(scrapy.Spider):
 	name = 'restaurantreviewscraper'
 	allowed_domains = ['tripadvisor.com']
 	start_urls = [
-		#"https://www.tripadvisor.in/Restaurants-g186525-Edinburgh_Scotland.html"	
-		"https://www.tripadvisor.com/Restaurants-g186338-London_England.html"
+		"https://www.tripadvisor.in/Restaurants-g186525-Edinburgh_Scotland.html"	
+		#"https://www.tripadvisor.com/Restaurants-g186338-London_England.html"
 	]	
 	
 	def __init__(self):
