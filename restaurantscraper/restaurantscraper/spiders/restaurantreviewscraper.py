@@ -12,8 +12,14 @@ class RestaurantreviewscraperSpider(scrapy.Spider):
 	name = 'restaurantreviewscraper'
 	allowed_domains = ['tripadvisor.com']
 	start_urls = [
-		"https://www.tripadvisor.in/Restaurants-g186525-Edinburgh_Scotland.html"	
+		#"https://www.tripadvisor.in/Restaurants-g186525-Edinburgh_Scotland.html"	
 		#"https://www.tripadvisor.com/Restaurants-g186338-London_England.html"
+		#"https://www.tripadvisor.in/Restaurants-g186220-Bristol_England.html"
+		#https://www.tripadvisor.in/Restaurants-g186411-Leeds_West_Yorkshire_England.html"
+		#"https://www.tripadvisor.in/Restaurants-g187069-Manchester_Greater_Manchester_England.html"
+		"https://www.tripadvisor.in/Restaurants-g186402-Birmingham_West_Midlands_England.html"
+		#"https://www.tripadvisor.in/Restaurants-g186337-Liverpool_Merseyside_England.html"
+
 	]	
 	
 	def __init__(self):
