@@ -1,0 +1,47 @@
+restaurant name,latitude,longitude,street,city,country,rating,price,review excellent count,review good count,review avg count,review poor count,review terrible count,positive review count,negative review count,total reviews
+Humble Grape - Islington,51.5375363,-0.103471,11-13 Theberton Street,London,England,5.0,EXPENSIVE,214,19,8,1,1,233,10,243
+The Oystermen Seafood Bar & Kitchen,51.5110981,-0.1236568,32 Henrietta Street,London,England,5.0,EXPENSIVE,550,67,18,2,3,617,23,640
+Humble Grape - Battersea,51.4611135,-0.1627322,2 Battersea Rise,London,England,5.0,EXPENSIVE,815,93,29,12,5,908,46,954
+Amrutha Lounge,51.4376362,-0.1867394,326 Garratt Lane,London,England,5.0,EXPENSIVE,239,4,2,0,1,243,3,246
+Oliveira Organic Vegetarian Kitchen,51.46403165,-0.272332651099298,469 Upper Richmond Road West,London,England,5.0,EXPENSIVE,88,2,1,0,0,90,1,91
+Pizza Union Dalston,51.5469366,-0.0754299,14 Kingsland High Street,London,England,5.0,AFFORDABLE,450,29,5,3,4,479,12,491
+Morso,51.357909,-0.1554385,130 Boundary Road,London,England,5.0,EXPENSIVE,73,3,0,1,0,76,1,77
+Core by Clare Smyth,51.5097775,-0.1976581,92 Kensington Park Road,London,England,5.0,MODERATE,352,26,8,0,4,378,12,390
+Buongiorno e Buonasera,51.524259,-0.1584739,58 Baker Street,London,England,5.0,EXPENSIVE,61,5,0,0,0,66,0,66
+Purslane Restaurant,55.9579133,-3.2068151,33A St. Stephen Street,Edinburgh,Scotland,4.5,MODERATE,728,108,32,12,3,836,47,883
+Nok's Kitchen,55.9571583,-3.2078008,"8 Gloucester Street,Stockbridge",Edinburgh,Scotland,5.0,EXPENSIVE,527,71,20,3,5,598,28,626
+Fazenda Rodizio Bar and Grill,55.952375,-3.2028857,102 George Street,Edinburgh,Scotland,5.0,EXPENSIVE,293,38,9,2,4,331,15,346
+Edinburgh Food Studio,55.9337818,-3.1671955,158 Dalkeith Road,Edinburgh,Scotland,5.0,MODERATE,88,11,0,1,0,99,1,100
+Chizuru Tei,55.9463149,-3.2160485,278 Morrison Street,Edinburgh,Scotland,5.0,EXPENSIVE,125,12,1,2,0,137,3,140
+The Table,55.9563006,-3.1983902,3A Dundas Street,Edinburgh,Scotland,5.0,MODERATE,303,7,2,1,3,310,6,316
+Colonnades at The Signet Library,55.9494146,-3.19168325947439,West Parliament Square,Edinburgh,Scotland,5.0,MODERATE,858,96,25,10,5,954,40,994
+Pickles,55.958676,-3.1904335,56A Broughton Street,Edinburgh,Scotland,5.0,EXPENSIVE,749,75,11,9,6,824,26,850
+Forage & Chatter,55.9506054,-3.20972,1A Alva Street,Edinburgh,Scotland,5.0,EXPENSIVE,887,70,20,8,5,957,33,990
+Aizle,55.9418006,-3.1788673,107-109 St. Leonards Street,Edinburgh,Scotland,5.0,MODERATE,638,91,15,0,0,729,15,744
+Sonder,55.9396179,-3.180222,74-78 South Clerk Street,Edinburgh,Scotland,5.0,EXPENSIVE,68,1,1,0,0,69,1,70
+Caribbean Croft,51.4613561,-2.59038714484926,30 Stokes Croft,Bristol,England,5.0,EXPENSIVE,227,43,6,1,0,270,7,277
+Fi Real,51.45722615,-2.57781145312227,57 West Street,Bristol,England,5.0,AFFORDABLE,101,11,2,0,1,112,3,115
+Pipal Tree Restaurant,51.4632077,-2.56283011686217,28 Chelsea Road,Bristol,England,5.0,EXPENSIVE,411,21,9,5,1,432,15,447
+Pasta Loco,51.46391625,-2.60814613218738,37A Cotham Hill,Bristol,England,5.0,EXPENSIVE,268,24,13,6,0,292,19,311
+Pasture,51.44949485,-2.5892914440419,2 Portwall Lane,Bristol,England,5.0,MODERATE,284,38,10,4,0,322,14,336
+The Crepe and Coffee Cabin,51.451663,-2.5963831,Prince St,Bristol,England,5.0,AFFORDABLE,230,14,8,1,6,244,15,259
+Koocha Mezze Bar,51.47031415,-2.59446865304539,10 Zetland Road,Bristol,England,5.0,EXPENSIVE,87,8,1,0,1,95,2,97
+Coronation Curry House,51.4457555,-2.61153779837319,190 Coronation Road,Bristol,England,4.5,EXPENSIVE,354,64,9,4,4,418,17,435
+Matina,51.4544199,-2.5927201,St Nicholas Market,Bristol,England,5.0,AFFORDABLE,210,22,0,0,0,232,0,232
+Everyday Thai,51.4798077,-2.52931048725681,11 New Station Road,Bristol,England,5.0,EXPENSIVE,494,49,13,3,5,543,21,564
+Charlie Brett's at The Allerton,53.3877837,-1.4650148,Nursery Lane,Yorkshire,England,5.0,EXPENSIVE,232,14,2,5,6,246,13,259
+Falafel Guys,53.7970817,-1.5426085,50 Briggate,Yorkshire,England,5.0,AFFORDABLE,511,10,3,5,3,521,11,532
+Westbourne Spice,53.89944555,-1.71337944936572,Westbourne Spice Bradford Road,Yorkshire,England,4.5,EXPENSIVE,419,55,15,4,8,474,27,501
+Ira B's,53.84611715,-1.52110387012668,27 Chelwood Drive,Yorkshire,England,5.0,EXPENSIVE,742,84,22,11,6,826,39,865
+La Cafetiere,53.8146379,-1.5612238,6 The Crescent,Yorkshire,England,5.0,EXPENSIVE,132,16,4,0,3,148,7,155
+The Oxford Place,53.8002738,-1.5505716,2 Oxford Place,Yorkshire,England,5.0,EXPENSIVE,213,26,6,0,1,239,7,246
+Wood Fire Dine,53.7485887,-1.4774063,34-36 Commercial Street,Yorkshire,England,5.0,EXPENSIVE,96,7,2,1,1,103,4,107
+MyLahore Leeds,53.3790214,-1.4808688,Cavendish Street,Yorkshire,England,5.0,AFFORDABLE,316,11,7,7,5,327,19,346
+Estabulo Rodizio Bar & Grill - The Light,53.7999379,-1.54585465985539,The Light The Headrow,Yorkshire,England,5.0,EXPENSIVE,359,41,9,4,3,400,16,416
+Salami & Co,53.5248348,-1.1334164,10 Market Place,Yorkshire,England,5.0,EXPENSIVE,108,6,2,0,1,114,3,117
+Estabulo Rodizio Bar & Grill - St Peter's Place,53.7971498,-1.5330273,5 St. Peters Place,Yorkshire,England,5.0,EXPENSIVE,939,88,26,15,9,1027,50,1077
+Home Restaurant,53.7970782,-1.5408984,16/17 Kirkgate,Yorkshire,England,5.0,MODERATE,284,18,3,1,4,302,8,310
+Poco Sicilian Street Food,53.8137732,-1.5999559,360 Kirkstall Road,Yorkshire,England,5.0,AFFORDABLE,121,8,2,1,1,129,4,133
+Northern Soul Grilled Cheese,53.4829712,-2.237895,10 Church Street,Greater Manchester,England,4.5,AFFORDABLE,635,140,28,10,6,775,44,819
+Ziya Asian Grill,53.4437963,-2.2184593,65-67 Wilmslow Road,Greater Manchester,England,4.5,EXPENSIVE,920,168,39,23,28,1088,90,1178
+Federal Cafe & Bar,53.4841414,-2.2384572,9 Nicholas Croft,Greater Manchester,England,4.5,EXPENSIVE,751,159,46,8,3,910,57,967
