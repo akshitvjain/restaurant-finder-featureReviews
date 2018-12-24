@@ -14,6 +14,9 @@
       <ul class="nav navbar-nav navbar-left">
         <li><a href="/home">Home</a></li>
       </ul>
+	  <ul class="nav navbar-nav navbar-right">
+        <li><a href="/search">Search</a></li>
+      </ul>
     </div>
   </div>
 </nav>
@@ -25,14 +28,16 @@
     	<meta charset="utf-8">
     	<meta name="viewport" content="width=device-width, initial-scale=1">
     	<link rel="icon" type="image/x-icon" href="favicon.ico">
-		<title>Search</title>
+		<title>Restautant Info</title>
  	</head>
 	<body>
- 		<div>
-			<form action = "http://localhost:5000/result" method = "POST">
-				<p>Restaurant Name: <input type = "text" name = "Restaurant Name" /></p>
-				<p><input type = "submit" value = "Submit" /></p>
-			</form>
-		</div>
-	</body>
+		<table border = 1>
+			{% for key, value in result.items() %}
+				<tr>
+					<th> {{ key }} </th>
+					<td> {{ value }} </td>
+				</tr>
+			{% endfor %}
+		</table>
+   </body>
 </html>
