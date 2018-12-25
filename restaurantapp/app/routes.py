@@ -19,10 +19,8 @@ def result():
 	if request.method == 'POST':
 		result = request.form
 		rest = result['Restaurant Name']
-		#restaurant_info = db.restaurantreviews.find( {'rest_name' : restaurant } )
-		#print(restaurant_info)
 		restaurant = db.restaurantreviews.find({}, {"rest_name":1, "_id":0})
 		for r in restaurant:
 			if (r['rest_name'].lower() == rest.lower()):
-				print(r['rest_name'].lower())
-				return render_template("result.html", result=result)
+				restaurant_info = db.restaurantreviews.find( {'rest_name' : r['rest_name'] } )
+				return render_template("result.html", result=restaurant_info[0])
