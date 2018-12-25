@@ -22,5 +22,7 @@ def result():
 		restaurant = db.restaurantreviews.find({}, {"rest_name":1, "_id":0})
 		for r in restaurant:
 			if (r['rest_name'].lower() == rest.lower()):
-				restaurant_info = db.restaurantreviews.find( {'rest_name' : r['rest_name'] } )
-				return render_template("result.html", result=restaurant_info[0])
+				if (db.restaurantreviews.find( {'rest_name' : r['rest_name'] } )):
+					restaurant_info = db.restaurantreviews.find( {'rest_name' : r['rest_name'] } )
+					return render_template("result.html", result=restaurant_info[0])			
+		return render_template("noresult.html")
