@@ -31,6 +31,14 @@
 		<title>Restautant Info</title>
  	</head>
 	<body>
-		<p> <b>Restaurant Name:</b> {{ result['rest_name'] }} </p>	
+		<p> <b>Restaurant Name:</b> {{ rest_info['rest_name'] }} </p>
+		<table border = 1>
+			{% for key, value in feature_review.items() %}
+				<tr>
+					<th> {{ key }} </th>
+					<td> {{ value }} </td>
+				</tr>
+			{% endfor %}
+		</table>
 	</body>
 </html>
