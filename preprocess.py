@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+import sys
+reload(sys)
+sys.setdefaultencoding('utf8')
 from pymongo import MongoClient
 import re
 import pandas as pd
@@ -16,7 +19,7 @@ from mlxtend.frequent_patterns import apriori
 class ProcessRestaurantItem(object):
 	
 	db_name = 'restaurantinfo'
-	fields = ['rest_reviews']
+	fields = ['rest_name', 'rest_reviews']
 	df = None	
 
 	def __init__(self): 
@@ -27,7 +30,7 @@ class ProcessRestaurantItem(object):
 	def load_mongodb_to_pandas(self):	
 		restaurants = []
 		for doc in self.db.restaurantreviews.find():
-			restaurants.append([doc['rest_reviews']])
+			restaurants.append([doc['rest_name'], doc['rest_reviews']])
 		self.df = pd.DataFrame(restaurants, columns=self.fields)
 
 	def decontracted(self, review):
@@ -137,20 +140,23 @@ class ProcessRestaurantItem(object):
 					return True
 		return False 
 	
-	def generate_summary(self, freq_features, processed_reviews_df):
+	def generate_summary(self, rest_name, freq_features, processed_reviews_df):
 		feature_summary_reviews = []
 		for feature in freq_features:
 			for i, review in enumerate(processed_reviews_df['reviews']):
 				if feature in review:
-					feature_summary_reviews.append([feature, review,
-								processed_reviews_df['sentiment'][i]])	
+					feature_summary_reviews.append([rest_name.lower(), feature, review,
+								processed_reviews_df['sentiment'][i]])
 		feature_summary_df = pd.DataFrame(feature_summary_reviews, 
-							columns=['feature', 'review', 'sentiment'])
+							columns=['restaurant name', 'feature', 'review', 'sentiment'])
 		return feature_summary_df
-		
+			
 	def process_reviews(self):
+		df_collection = []
 		# one restaurant at a time -> summarize reviews 
 		for i, review_collection in enumerate(self.df['rest_reviews']):
+			# get restaurant name
+			rest_name = self.df['rest_name'][i]
 			# collection of restraunt specific pos-tagged review sentences
 			tagged_reviews_sent = []
 			# collection of features in the reviews
@@ -194,9 +200,12 @@ class ProcessRestaurantItem(object):
 			# store the pos, neg opinion words
 			pos_opinion, neg_opinion = self.opinion_orientation(opinion_words)
 			processed_reviews_df = self.sentence_orientation(pos_opinion, neg_opinion, review_df)
-			feature_summary_df = self.generate_summary(freq_features, processed_reviews_df)
-			print(feature_summary_df)
-
+			# generate feature based review summary
+			feature_summary_df = self.generate_summary(rest_name, freq_features, processed_reviews_df)
+			df_collection.append(feature_summary_df)
+		feature_collection_summary = pd.concat(df_collection, ignore_index=True)
+		feature_collection_summary.to_csv('restaurantapp/app/feature_review_summary.csv', index=False)
+		
 if __name__ == '__main__':
 	process = ProcessRestaurantItem()
 	process.load_mongodb_to_pandas()
