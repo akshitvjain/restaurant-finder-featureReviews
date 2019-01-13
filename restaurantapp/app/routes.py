@@ -49,6 +49,11 @@ def result():
 							feature_review[features[i]] = [reviews[i]]
 				# parse restaurant and feature-review data to render template
 				if (db.restaurantreviews.find( {'rest_name' : r['rest_name'] } )):
-					restaurant_info = db.restaurantreviews.find( {'rest_name' : r['rest_name'] } )
+					restaurant_info = db.restaurantreviews.find( {'rest_name' : r['rest_name'] }) 
+					print(restaurant_info[0])
 					return render_template("result.html", rest_info=restaurant_info[0], feature_review=feature_review)			
 		return render_template("noresult.html")
+
+@app.route('/stats')
+def stats():
+	return render_template('stats.html')
