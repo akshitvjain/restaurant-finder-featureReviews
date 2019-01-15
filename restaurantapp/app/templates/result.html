@@ -22,26 +22,85 @@
   </div>
 </nav>
 
+<!DOCTYPE html>
 <html>
-	<head>
-    	<link rel="stylesheet" href="https://bootswatch.com/3/sandstone/bootstrap.min.css">
-    	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
-    	<meta charset="utf-8">
-    	<meta name="viewport" content="width=device-width, initial-scale=1">
-    	<link rel="icon" type="image/x-icon" href="favicon.ico">
-		<title>Restautant Info</title>
- 	</head>
-	<body>
-		<p> <b>Restaurant Name:</b> {{ rest_info['rest_name'] }} </p>
-		<p> <b>Cuisines:</b> {{ rest_info['rest_cuisines'] }} </p>
-		
-		<table border = 1>
-			{% for key, value in feature_review.items() %}
-				<tr>
-					<th> {{ key }} </th>
-					<td> {{ value[0] }} </td>
-				</tr>
-			{% endfor %}
-		</table>
-	</body>
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="https://bootswatch.com/3/sandstone/bootstrap.min.css">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<title>Restautant Info</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Style the header */
+.header {
+  background-color: #f1f1f1;
+  padding: 30px;
+  text-align: left;
+  font-size: 15px;
+}
+
+/* Create three equal columns that floats next to each other */
+.column {
+  background-color: #f1f1f1;
+  float: center;
+  width: 75%;
+  padding: 10px;
+  margin:0 auto;
+}
+
+/* Responsive layout - makes the three columns stack on top of each other instead of next to each other */
+@media (max-width: 600px) {
+  .column {
+    width: 100%;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h2> {{ rest_info['rest_name'] }} </h2>
+  <p><b>Address:</b> {{ rest_info['rest_street'] }} | {{ rest_info['rest_city'] }} | {{ rest_info['rest_country'] }} </p>
+  <p><b>Rating:</b> {{ rest_info['rest_rating'] }} <b>|</b> <b>Price: </b> {{ rest_info['rest_price'] }} </p>
+  <p><b>Cuisines:</b> {{ rest_info['rest_cuisines'] }} </p>
+  <p><b>Meals:</b> {{ rest_info['rest_meals'] }} </p>
+  <p><b>Features:</b> {{ rest_info['rest_features'] }} </p>
+</div>
+
+<div align="center">
+<h3> Analyze Restaurants by Review Count </h3>
+<p> * search for restaurant by city * <p>
+<div class='tableauPlaceholder' id='viz1547549942264' style='position: relative'><noscript><a href='#'><img alt=' ' src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;Re&#47;RestaurantDataAnalysis&#47;ReviewsDashboard&#47;1_rss.png' style='border: none' /></a></noscript><object class='tableauViz'  style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /> <param name='embed_code_version' value='3' /> <param name='site_root' value='' /><param name='name' value='RestaurantDataAnalysis&#47;ReviewsDashboard' /><param name='tabs' value='no' /><param name='toolbar' value='yes' /><param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;Re&#47;RestaurantDataAnalysis&#47;ReviewsDashboard&#47;1.png' /> <param name='animate_transition' value='yes' /><param name='display_static_image' value='yes' /><param name='display_spinner' value='yes' /><param name='display_overlay' value='yes' /><param name='display_count' value='yes' /></object></div>                <script type='text/javascript'>                    var divElement = document.getElementById('viz1547549942264');                    var vizElement = divElement.getElementsByTagName('object')[0];                    vizElement.style.width='1000px';vizElement.style.height='827px';                    var scriptElement = document.createElement('script');                    scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';                    vizElement.parentNode.insertBefore(scriptElement, vizElement);                </script>
+</div>
+
+<div class="column">
+	<div align="center">
+  		<h3> People are talking about ... </h3>
+	</div>
+	{% for key, value in feature_review.items() %}	
+			<div class="list-group">
+  				<a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+    				<div class="d-flex w-100 justify-content-between">
+     					 <b>{{ key }}</b>
+    				</div>
+					{% for i in range(0, length[loop.index - 1]): %}
+						{% set i = loop.index - 1 %}
+						<p class="mb-1">{{ value[0] }}</p>
+					{% endfor %}
+     			</a>
+			</div>
+	{% endfor %}
+</div> 
+
+</body>
 </html>
+
