@@ -70,12 +70,35 @@ form.example::after {
 </style>
 </head>
 <body>
-	<div align="center">
-		<p><b>Restaurant Name </b></p>
-	</div>
-	<form class="example" action = "http://localhost:5000/result" method = "POST" style="margin:auto;max-width:300px">
-		<input type = "text" placeholder="Search.." name = "Restaurant Name">
-		<button type="submit"><i class="fa fa-search"></i></button>			
+
+<div align="center">
+	<form action="{{ url_for('search') }}" method="POST" style="margin:auto;max-width:300px">
+		<input type="text" list="c" placeholder="City" name="c">
+		<datalist id="c">
+    		<option value="Bristol">
+    		<option value="Greater Manchester">
+    		<option value="London">
+			<option value="Yorkshire">
+    		<option value="Edinburgh">
+  		</datalist>
+  		<input type="submit">
 	</form>
+</div>
+
+{% if restaurants != None %}
+	<div align="center">
+		<h3> Search for Restaurants in {{ city }} </h3>
+		<form action="{{ url_for('result') }}" method="POST" autocomplete="off" style="margin:auto;max-width:300px">
+		<input type="text" list="restaurant" placeholder="Restaurant" name="restaurant">
+		<datalist id="restaurant">
+			{% for r in restaurants %}
+				<option value="{{ r }}">
+			{% endfor %}
+		</datalist>
+		<input type="submit">
+	</div>
+{% endif %}
+
 </body>
 </html>
+

@@ -1,3 +1,7 @@
+import sys
+reload(sys)
+sys.setdefaultencoding("utf-8")
+
 from pymongo import MongoClient
 from flask import flash, render_template, request, redirect
 from app import app
@@ -17,20 +21,56 @@ csvFile.close()
 col_names = restaurant_review_collection.pop(0)
 rest_df = pd.DataFrame(restaurant_review_collection, columns=col_names, index=None)
 
+def get_restaurants(city_rest, city):
+	rest_in_city = []
+	for rc in city_rest:
+		if (rc['rest_city'] == city):
+			rest_in_city.append(rc['rest_name'])
+	return rest_in_city
+
 @app.route('/')
 @app.route('/home')
 def home():
 	return render_template('home.html')
 
-@app.route('/search')
+@app.route('/search', methods = ['POST', 'GET'])
 def search():
-	return render_template('search.html')
+	if request.method == 'POST':
+		city = request.form['c']
+		# get restaurant and city info from database
+		city_rest = db.restaurantreviews.find({}, {"rest_name":1, "rest_city":1, "_id":0})
+
+		# get restaurnats by city
+		if (city == "Bristol"):
+			rest_in_city = get_restaurants(city_rest, city)
+			return render_template('search.html', restaurants=rest_in_city, city=city)
+
+		elif (city == "Greater Manchester"):
+			rest_in_city = get_restaurants(city_rest, city)
+			return render_template('search.html', restaurants=rest_in_city, city=city)
+
+		elif (city == "London"):
+			rest_in_city = get_restaurants(city_rest, city)
+			return render_template('search.html', restaurants=rest_in_city, city=city)
+
+		elif (city == "Yorkshire"):
+			rest_in_city = get_restaurants(city_rest, city)
+			return render_template('search.html', restaurants=rest_in_city, city=city)
+
+		elif (city == "Edinburgh"):
+			rest_in_city = get_restaurants(city_rest, city)
+			return render_template('search.html', restaurants=rest_in_city, city=city)
+
+		else:
+			pass
+
+	return render_template('search.html', restaurants=None)
 
 @app.route('/result', methods = ['POST', 'GET'])
 def result():
 	if request.method == 'POST':
 		result = request.form
-		rest = result['Restaurant Name']
+		rest = result['restaurant']
 		restaurant = db.restaurantreviews.find({}, {"rest_name":1, "_id":0})
 		for r in restaurant:
 			if (r['rest_name'].lower() == rest.lower()):
@@ -48,12 +88,12 @@ def result():
 						else:
 							feature_review[features[i]] = [reviews[i]]
 					length = [len(x) for x in feature_review.values()]
-					print(length)
 				# parse restaurant and feature-review data to render template
 				if (db.restaurantreviews.find( {'rest_name' : r['rest_name'] } )):
 					restaurant_info = db.restaurantreviews.find( {'rest_name' : r['rest_name'] }) 
 					return render_template("result.html", rest_info=restaurant_info[0], feature_review=feature_review, length=length)			
 		return render_template("noresult.html")
+		
 
 @app.route('/stats')
 def stats():
