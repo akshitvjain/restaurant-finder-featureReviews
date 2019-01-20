@@ -24,68 +24,68 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<link rel="stylesheet" href="https://bootswatch.com/3/sandstone/bootstrap.min.css">
-<style>
-body {
-  margin:0 auto;
-  font-family: Arial;
-}
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="https://bootswatch.com/3/sandstone/bootstrap.min.css">
+	<style>
+		body {
+  			margin:0 auto;
+  			font-family: Arial;
+		}
 
-* {
-  box-sizing: border-box;
-}
+		* {
+  			box-sizing: border-box;
+		}
 
-form.example input[type=text] {
-  padding: 10px;
-  font-size: 17px;
-  border: 1px solid grey;
-  float: left;
-  width: 80%;
-  background: #f1f1f1;
-}
+		form.example input[type=text] {
+  			padding: 10px;
+  			font-size: 17px;
+  			border: 1px solid grey;
+  			float: left;
+  			width: 80%;
+  			background: #f1f1f1;
+		}
 
-form.example button {
-  float: left;
-  width: 20%;
-  padding: 13.5px;
-  background: #2196F3;
-  color: white;
-  font-size: 17px;
-  border: 1px solid grey;
-  border-left: none;
-  cursor: pointer;
-}
+		form.example button {
+  			float: left;
+  			width: 20%;
+  			padding: 13.5px;
+  			background: #2196F3;
+  			color: white;
+  			font-size: 17px;
+  			border: 1px solid grey;
+ 			border-left: none;
+	 		cursor: pointer;
+		}
+	
+		form.example button:hover {
+ 			background: #0b7dda;
+		}
 
-form.example button:hover {
-  background: #0b7dda;
-}
-
-form.example::after {
-  content: "";
-  clear: both;
-  display: table;
-}
-</style>
+		form.example::after {
+ 			content: "";
+ 			clear: both;
+  			display: table;
+		}
+	</style> 
 </head>
-<body>
 
-<div align="center">
-	<form action="{{ url_for('search') }}" method="POST" style="margin:auto;max-width:300px">
-		<input type="text" list="c" placeholder="City" name="c">
-		<datalist id="c">
-    		<option value="Bristol">
-    		<option value="Greater Manchester">
-    		<option value="London">
-			<option value="Yorkshire">
-    		<option value="Edinburgh">
-  		</datalist>
-  		<input type="submit">
-	</form>
-</div>
+	<div align="center">
+		<form action="{{ url_for('search') }}" method="POST" style="margin:auto;max-width:300px">
+			<input type="text" list="c" placeholder="City" name="c">
+			<datalist id="c">
+    			<option value="Bristol">
+    			<option value="Greater Manchester">
+    			<option value="London">
+				<option value="Yorkshire">
+    			<option value="Edinburgh">
+  			</datalist>
+  			<input type="submit">
+		</form>
+	</div>
 
 {% if restaurants != None %}
+
 	<div align="center">
 		<h3> Search for Restaurants in {{ city }} </h3>
 		<form action="{{ url_for('result') }}" method="POST" autocomplete="off" style="margin:auto;max-width:300px">
@@ -97,7 +97,9 @@ form.example::after {
 		</datalist>
 		<input type="submit">
 	</div>
+	
 {% endif %}
+
 
 </body>
 </html>
