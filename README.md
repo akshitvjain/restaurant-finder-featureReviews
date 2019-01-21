@@ -23,11 +23,11 @@
 3. [Categorical/Positive/Negative Review Count - Filter by City](https://public.tableau.com/profile/akshit.jain6678#!/vizhome/RestaurantDataAnalysis/ReviewsDashboard)
 
 ### Screenshots (Restaurant App)
-[[https://github.com/akshitvjain/restaurant-reviews/blob/master/media/Screen%20Shot%202019-01-21%20at%203.40.00%20PM.png]]
-[[https://github.com/akshitvjain/restaurant-reviews/blob/master/media/Screen%20Shot%202019-01-21%20at%203.40.39%20PM.png]]
-[[https://github.com/akshitvjain/restaurant-reviews/blob/master/media/Screen%20Shot%202019-01-21%20at%204.04.56%20PM.png]]
-[[https://github.com/akshitvjain/restaurant-reviews/blob/master/media/Screen%20Shot%202019-01-21%20at%204.05.07%20PM.png]]
-[[https://github.com/akshitvjain/restaurant-reviews/blob/master/media/Screen%20Shot%202019-01-21%20at%204.05.27%20PM.png]]
+![link](https://github.com/akshitvjain/restaurant-reviews/blob/master/media/Screen%20Shot%202019-01-21%20at%203.40.00%20PM.png)
+![link](https://github.com/akshitvjain/restaurant-reviews/blob/master/media/Screen%20Shot%202019-01-21%20at%203.40.39%20PM.png)
+![link](https://github.com/akshitvjain/restaurant-reviews/blob/master/media/Screen%20Shot%202019-01-21%20at%204.04.56%20PM.png)
+![link](https://github.com/akshitvjain/restaurant-reviews/blob/master/media/Screen%20Shot%202019-01-21%20at%204.05.07%20PM.png)
+![link](https://github.com/akshitvjain/restaurant-reviews/blob/master/media/Screen%20Shot%202019-01-21%20at%204.05.27%20PM.png)
 
 ### Programming Language
 Python
