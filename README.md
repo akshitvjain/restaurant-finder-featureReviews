@@ -13,8 +13,8 @@
 
 ### Code
 1. [Restaurant Scraper](https://github.com/akshitvjain/restaurant-reviews/tree/master/restaurantscraper)
-2. [Feature Review and Sentiment Analysis](https://github.com/akshitvjain/restaurant-reviews/blob/master/preprocess.py)
-3. [Data Cleaning and Processing for Analysis](https://github.com/akshitvjain/restaurant-reviews/blob/master/analysis-rest.py)
+2. [Data Cleaning and Processing for Analysis](https://github.com/akshitvjain/restaurant-reviews/blob/master/analysis-rest.py)
+3. [Feature Review and Sentiment Analysis](https://github.com/akshitvjain/restaurant-reviews/blob/master/preprocess.py)
 4. [Web Application](https://github.com/akshitvjain/restaurant-reviews/tree/master/restaurantapp)
 
 ### Data Visualization
