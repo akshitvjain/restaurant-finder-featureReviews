@@ -5,7 +5,7 @@ from scrapy.selector import Selector
 from selenium import webdriver
 from restaurantscraper.items import RestaurantscraperItem
 
-MAX_RESTAURANTS = 15 	# collect information from each
+MAX_RESTAURANTS = 15	# collect information from each
 MAX_REVIEWS = 10		# collect reviews from each restaurants
 
 class RestaurantreviewscraperSpider(scrapy.Spider):
@@ -57,7 +57,7 @@ class RestaurantreviewscraperSpider(scrapy.Spider):
 		rest_item['rest_name'] = sel.xpath('//h1/text()').extract()[1]
 
 		# extract restaurant addr 
-		street = response.xpath('//*[@id="taplc_restaurants_detail_info_content_0"]/div[4]/div[2]/span[2]/text()').extract_first()
+		street = response.xpath('//*[@id="taplc_resp_rr_top_info_rr_resp_0"]/div/div[4]/div[1]/div/div/div[1]/span[2]/span[1]/text()').extract_first()
 		city = response.xpath('//*[@id="taplc_trip_planner_breadcrumbs_0"]/ul/li[4]/a/span/text()').extract_first()
 		country = response.xpath('//*[@id="taplc_trip_planner_breadcrumbs_0"]/ul/li[3]/a/span/text()').extract_first()
 		rest_item['rest_street'] = street
@@ -76,16 +76,17 @@ class RestaurantreviewscraperSpider(scrapy.Spider):
 
 		# extract price
 		rest_item['rest_price'] = \
-			response.xpath('//*[@id="taplc_restaurants_detail_info_content_0"]/div[2]/span/span/text()').extract_first()
+			response.xpath('//*[@id="taplc_resp_rr_top_info_rr_resp_0"]/div/div[3]/div[3]/div/a[1]/text()').extract_first()
 
 		# extract restaurant features	
 
+		"""
 		row_four_features = \
 		(response.xpath('//*[@id="RESTAURANT_DETAILS"]/div[2]/div[1]/div[4]/div[1]/text()').extract_first().replace("\n", ""))
 		row_five_features = \
-		(response.xpath('//*[@id="RESTAURANT_DETAILS"]/div[2]/div[1]/div[5]/div[1]/text()').extract_first().replace("\n", ""))
+		(response.xpath('//*[@id="RESTAURANT_DETAILS"]/div[4]/div[1]/div[5]/div[1]/text()').extract_first().replace("\n", ""))
 		
-		if (row_four_features == "Restaurant features"):
+		if ( == "Restaurant features"):
 			rest_item['rest_features'] = \
 			response.xpath('//*[@id="RESTAURANT_DETAILS"]/div[2]/div[1]/div[4]/div[2]/text()').extract_first()
 		elif (row_five_features == "Restaurant features"):
@@ -109,24 +110,25 @@ class RestaurantreviewscraperSpider(scrapy.Spider):
 			response.xpath('//*[@id="RESTAURANT_DETAILS"]/div[2]/div[1]/div[4]/div[2]/text()').extract_first()
 		else:
 			rest_item['rest_meals'] = None
+		"""
 
 		# extract positive and negative reviews count
-		excellent_count = int(response.xpath('//*[@id="ratingFilter"]/ul/li[1]/label/span[2]/text()').extract_first())
-		good_count = int(response.xpath('//*[@id="ratingFilter"]/ul/li[2]/label/span[2]/text()').extract_first())
+		excellent_count = int(response.xpath('//*[@id="taplc_detail_filters_rr_resp_0"]/div/div[1]/div/div[2]/div[1]/div/div[2]/div/div[1]/span[2]/text()').extract_first())
+		good_count = int(response.xpath('//*[@id="taplc_detail_filters_rr_resp_0"]/div/div[1]/div/div[2]/div[1]/div/div[2]/div/div[2]/span[2]/text()').extract_first())	
 		rest_item['review_excellent_count'] = excellent_count 
 		rest_item['review_good_count'] = good_count
 
-		avg_count = int(response.xpath('//*[@id="ratingFilter"]/ul/li[3]/label/span[2]/text()').extract_first())
-		poor_count = int(response.xpath('//*[@id="ratingFilter"]/ul/li[4]/label/span[2]/text()').extract_first())
-		terrible_count = int(response.xpath('//*[@id="ratingFilter"]/ul/li[5]/label/span[2]/text()').extract_first())
+		avg_count = int(response.xpath('//*[@id="taplc_detail_filters_rr_resp_0"]/div/div[1]/div/div[2]/div[1]/div/div[2]/div/div[3]/span[2]/text()').extract_first())
+		poor_count = int(response.xpath('//*[@id="taplc_detail_filters_rr_resp_0"]/div/div[1]/div/div[2]/div[1]/div/div[2]/div/div[4]/span[2]/text()').extract_first())
+		terrible_count = int(response.xpath('//*[@id="taplc_detail_filters_rr_resp_0"]/div/div[1]/div/div[2]/div[1]/div/div[2]/div/div[5]/span[2]/text()').extract_first())
 		rest_item['review_avg_count'] = avg_count 
 		rest_item['review_poor_count'] = poor_count
 		rest_item['review_terrible_count'] = terrible_count
 
 		# extract total number of reviews 
-		if (response.css('a.seeAllReviews')):
+		if (response.xpath('//*[@id="REVIEWS"]/div[1]/div/div[1]/span/text()')):
 			rest_item['rest_total_reviews'] = \
-			int(response.xpath('//*[@id="taplc_location_review_filter_controls_0_form"]/div[4]/ul/li[2]/label/span/text()') \
+			int(response.xpath('//*[@id="REVIEWS"]/div[1]/div/div[1]/span/text()') \
 								.extract_first().strip('()').replace(",", ""))
 		else:
 			hasReviews = False
