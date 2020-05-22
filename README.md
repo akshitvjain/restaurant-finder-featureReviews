@@ -1,4 +1,4 @@
-## Restaurant Analysis & Finder - Web Scraping and Sentiment Analysis of Restaurant Info/Reviews on TripAdvisor (UK)
+## Restaurant Finder
 
 ### Description
 * Built a web crawler using Scrapy to collect restaurant information and reviews from TripAdvisor.
