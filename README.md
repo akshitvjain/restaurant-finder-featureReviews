@@ -2,14 +2,12 @@
 
 ### Description
 * Built a web crawler using Scrapy to collect restaurant information and reviews from TripAdvisor.
-* Stored all the data in MongoDB after preprocessing/cleaning the reviews and other restaurant related information.
-* Conducted data pre-processing and cleaning by removing stop words, punctuation, special characters, numbers, and white-spaces from reviews.
-* Performed tokenization and stemming of reviews, and built a corpus out of it.
-* Identified features of the restaurants from the reviews that customers had written using data mining and natural language processing.
-* For each feature, opinion sentences were identified and categorized as positive or negative using the WordNet database.
-* Produced a summary of the restaurant features based on the discovered information.
-* Performed analysis and created intelligent dashboards using Tableau to discover top restaurants by positive and negative reviews, number of restaurants offering a specific cuisine, number of restaurants offering a specific feature/meal, number of restaurants by price category, top restaurants based on location, etc.
-* Built a Flask application for users to search for restaurants based on their preferences – the application displays a feature based summary of reviews for the searched restaurant and provides restaurant statistics by city along with other key information.
+* Performed web scraping, cleaning and preprocessing of restaurant data before storing in MongoDB.
+* Removed stop words, punctuations, special characters, numbers, and white-spaces from user reviews, and built a corpus applying tokenization and stemming.
+* Identified key restaurant features from user reviews using Apriori algorithm and NLP.
+* Generated summarized reviews based on frequent restaurant features.
+* Created intelligent dashboards using Tableau to discover top restaurants by positive and negative reviews, number of restaurants offering a specific cuisine, number of restaurants offering a specific feature/meal, number of restaurants by price category, top restaurants based on location, etc.
+* Built a Flask application for users to search for restaurants based on their preference. The application also displays a feature based reviews for the searched restaurant and provides restaurant statistics by city along with other key information.
 
 ### Code
 1. [Restaurant Scraper](https://github.com/akshitvjain/restaurant-reviews/tree/master/restaurantscraper)
