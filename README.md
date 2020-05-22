@@ -6,7 +6,7 @@
 * Removed stop words, punctuations, special characters, numbers, and white-spaces from user reviews, and built a corpus applying tokenization and stemming.
 * Identified key restaurant features from user reviews using Apriori algorithm and NLP.
 * Generated summarized reviews based on frequent restaurant features.
-* Created intelligent dashboards using Tableau to discover top restaurants by positive and negative reviews, number of restaurants offering a specific cuisine, number of restaurants offering a specific feature/meal, number of restaurants by price category, top restaurants based on location, etc.
+* Created intelligent dashboards using Tableau to discover top restaurants by positive and negative reviews, cuisine, feature/meal, price, and location.
 * Built a Flask application for users to search for restaurants based on their preference. The application also displays a feature based reviews for the searched restaurant and provides restaurant statistics by city along with other key information.
 
 ### Code
